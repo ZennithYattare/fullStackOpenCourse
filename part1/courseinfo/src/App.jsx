@@ -1,5 +1,6 @@
 /** @format */
 
+// Done with 1.1-1.5
 const Header = (props) => {
 	return <h1>{props.course}</h1>;
 };
@@ -25,7 +26,7 @@ const Content = (props) => {
 };
 
 const Total = (props) => {
-	// add the total of exercises
+	// Add the total of exercises
 	let total = 0;
 
 	for (let i = 0; i < props.parts.length; i++) {
