@@ -30,8 +30,12 @@ function App() {
 			<button onClick={() => setBad(bad + 1)}>bad</button>
 
 			<h2>statistics</h2>
-			
-			<Statistics good={good} neutral={neutral} bad={neutral} />
+
+			{!good && !neutral && !bad ? (
+				<p>No feedback given</p>
+			) : (
+				<Statistics good={good} neutral={neutral} bad={bad} />
+			)}
 		</div>
 	);
 }
