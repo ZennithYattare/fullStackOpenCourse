@@ -8,31 +8,32 @@ const Statistics = ({ good, bad, neutral }) => {
 	const positive = (good / total) * 100;
 
 	return (
-		<div>
-			{/* StatisticLine */}
-			<StatisticLine text="Good" value={good} />
-			<StatisticLine text="Neutral" value={neutral} />
-			<StatisticLine text="Bad" value={bad} />
+		<table>
+			<tbody>
+				{/* StatisticLine */}
+				<StatisticLine text="Good" value={good} />
+				<StatisticLine text="Neutral" value={neutral} />
+				<StatisticLine text="Bad" value={bad} />
 
-			{/* Total */}
-			<StatisticLine text="All" value={total} />
+				{/* Total */}
+				<StatisticLine text="All" value={total} />
 
-			{/* Average */}
-			<StatisticLine text="Average" value={average} />
+				{/* Average */}
+				<StatisticLine text="Average" value={average} />
 
-			{/* Positive */}
-			<StatisticLine text="Positive" value={positive} />
-		</div>
+				{/* Positive */}
+				<StatisticLine text="Positive" value={positive} />
+			</tbody>
+		</table>
 	);
 };
 
 const StatisticLine = (props) => {
 	return (
-		<>
-			<p>
-				{props.text}: {props.value}
-			</p>
-		</>
+		<tr>
+			<td>{props.text}</td>
+			<td>{props.value}</td>
+		</tr>
 	);
 };
 
