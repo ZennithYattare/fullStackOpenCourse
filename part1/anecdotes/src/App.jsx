@@ -16,7 +16,14 @@ function App() {
 
 	const [selected, setSelected] = useState(0);
 
-	return <div>{anecdotes[selected]}</div>;
+	return (
+		<div>
+			<h3>{anecdotes[selected]}</h3>
+			<button onClick={() => setSelected(Math.floor(Math.random() * 8))}>
+				next anecdote
+			</button>
+		</div>
+	);
 }
 
 export default App;
