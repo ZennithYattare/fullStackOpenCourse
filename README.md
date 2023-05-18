@@ -2,7 +2,7 @@
 
 ## Submitted Courses (started in April 2023)
 - [x] Part 0 - Fundamentals of Web apps
-- [ ] Part 1 - Introduction to React
+- [x] Part 1 - Introduction to React
 - [ ] Part 2 - Communicating with server
 - [ ] Part 3 - Programming a server with NodeJS and Express
 - [ ] Part 4 - Testing Express servers, user administration
