@@ -19,6 +19,7 @@ function App() {
 
 	return (
 		<div>
+			<h2>Anecdote of the day</h2>
 			<h3>{anecdotes[selected]}</h3>
 			<p>has {votes[selected]} votes</p>
 			<button
@@ -33,6 +34,10 @@ function App() {
 			<button onClick={() => setSelected(Math.floor(Math.random() * 8))}>
 				next anecdote
 			</button>
+
+			<h2>Anecdote with most votes</h2>
+			<h3>{anecdotes[votes.indexOf(Math.max(...votes))]}</h3>
+			<p>has {Math.max(...votes)} votes</p>
 		</div>
 	);
 }
