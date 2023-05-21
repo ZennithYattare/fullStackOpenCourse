@@ -1,6 +1,5 @@
 /** @format */
 
-import { useState } from "react";
 import Course from "./components/Course";
 
 function App() {
