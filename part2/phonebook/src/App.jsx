@@ -40,7 +40,6 @@ function App() {
 
 	return (
 		<div>
-			<div>debug: {newName}</div>
 			<h2>Phonebook</h2>
 			<form onSubmit={addPerson}>
 				<div>
