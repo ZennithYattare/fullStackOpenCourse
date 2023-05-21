@@ -27,11 +27,15 @@ const Part = ({ part }) => {
 	);
 };
 
-const Course = ({ course }) => {
+const Course = ({ courses }) => {
 	return (
 		<div>
-			<Header course={course} />
-			<Content parts={course.parts} />
+			{courses.map((course) => (
+				<div key={course.id}>
+					<Header course={course} />
+					<Content parts={course.parts} />
+				</div>
+			))}
 		</div>
 	);
 };
