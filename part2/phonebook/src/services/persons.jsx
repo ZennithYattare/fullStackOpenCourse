@@ -17,6 +17,13 @@ const create = (newObject) => {
 		.catch((error) => console.log(error.toJSON()));
 };
 
+const update = (id, newObject) => {
+	const request = axios.put(`${baseUrl}/${id}`, newObject);
+	return request
+		.then((response) => response.data)
+		.catch((error) => console.log(error.toJSON()));
+};
+
 const deletePerson = (id) => {
 	const request = axios.delete(`${baseUrl}/${id}`);
 	return request
@@ -27,5 +34,6 @@ const deletePerson = (id) => {
 export default {
 	getAll,
 	create,
+	update,
 	deletePerson,
 };
