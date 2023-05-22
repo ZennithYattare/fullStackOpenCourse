@@ -6,6 +6,8 @@ import Filter from "./components/Filter.jsx";
 import PersonForm from "./components/PersonForm.jsx";
 import Persons from "./components/Persons.jsx";
 
+import personService from "./services/persons.jsx";
+
 function App() {
 	const [persons, setPersons] = useState([]);
 	const [newName, setNewName] = useState("");
@@ -14,9 +16,8 @@ function App() {
 
 	useEffect(() => {
 		console.log("effect");
-		axios.get("http://localhost:3001/persons").then((response) => {
-			console.log("promise fulfilled");
-			setPersons(response.data);
+		personService.getAll().then((initialPersons) => {
+			setPersons(initialPersons);
 		});
 	}, []);
 
@@ -27,7 +28,6 @@ function App() {
 		const personObject = {
 			name: newName,
 			number: newNumber,
-			id: persons.length + 1,
 		};
 
 		const nameExists = persons.some((person) => person.name === newName);
@@ -35,9 +35,11 @@ function App() {
 		if (nameExists) {
 			alert(`${newName} is already added to the phonebook`);
 		} else {
-			setPersons(persons.concat(personObject));
-			setNewNumber("");
-			setNewName("");
+			personService.create(personObject).then((returnedPerson) => {
+				setPersons(persons.concat(returnedPerson));
+				setNewNumber("");
+				setNewName("");
+			});
 		}
 	};
 
