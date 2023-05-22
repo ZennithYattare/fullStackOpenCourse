@@ -13,7 +13,7 @@ function App() {
 	const [newName, setNewName] = useState("");
 	const [newNumber, setNewNumber] = useState("");
 	const [filter, setFilter] = useState("");
-	const [successMessage, setSuccessMessage] = useState(null);
+	const [message, setMessage] = useState(null);
 
 	useEffect(() => {
 		console.log("effect");
@@ -50,37 +50,85 @@ function App() {
 									: returnedPerson
 							)
 						);
-						setSuccessMessage(
-							`Updated ${returnedPerson.name}'s number.`
-						);
+						// setMessage object with message and type instead of using useState for message and type separately
+						setMessage({
+							message: `Updated ${returnedPerson.name}.`,
+							type: "success",
+						});
 						setTimeout(() => {
-							setSuccessMessage(null);
+							setMessage(null);
 						}, 5000);
 						setNewNumber("");
 						setNewName("");
+					})
+					.catch(() => {
+						setMessage({
+							message: `Information of ${newName} has already been removed from server.`,
+							type: "error",
+						});
+						setTimeout(() => {
+							setMessage(null);
+						}, 5000);
+						setPersons(
+							persons.filter((person) => person.name !== newName)
+						);
 					});
 		} else {
-			personService.create(personObject).then((returnedPerson) => {
-				setPersons(persons.concat(returnedPerson));
-				setSuccessMessage(`Added ${returnedPerson.name}.`);
-				setTimeout(() => {
-					setSuccessMessage(null);
-				}, 5000);
-				setNewNumber("");
-				setNewName("");
-			});
+			personService
+				.create(personObject)
+				.then((returnedPerson) => {
+					setPersons(persons.concat(returnedPerson));
+					setMessage({
+						message: `Updated ${returnedPerson.name}.`,
+						type: "success",
+					});
+					setTimeout(() => {
+						setMessage(null);
+					}, 5000);
+					setNewNumber("");
+					setNewName("");
+				})
+				.catch((error) => {
+					console.log(error.response.data);
+					setMessage({
+						message: error.response.data.error,
+						type: "error",
+					});
+					setTimeout(() => {
+						setMessage(null);
+					}, 5000);
+				});
 		}
 	};
 
 	const handleDelete = (id, name) => {
 		if (window.confirm(`Delete ${name}?`)) {
-			personService.deletePerson(id).then(() => {
-				setPersons(personsToShow.filter((person) => person.id !== id));
-				setSuccessMessage(`Deleted ${name}.`);
-				setTimeout(() => {
-					setSuccessMessage(null);
-				}, 5000);
-			});
+			personService
+				.deletePerson(id)
+				.then(() => {
+					setPersons(
+						personsToShow.filter((person) => person.id !== id)
+					);
+					setMessage({
+						message: `Deleted ${name}.`,
+						type: "success",
+					});
+					setTimeout(() => {
+						setMessage(null);
+					}, 5000);
+				})
+				.catch(() => {
+					setMessage({
+						message: `Information of ${name} has already been removed from server.`,
+						type: "error",
+					});
+					setTimeout(() => {
+						setMessage(null);
+					}, 5000);
+					setPersons(
+						persons.filter((person) => person.name !== name)
+					);
+				});
 		}
 	};
 
@@ -108,7 +156,7 @@ function App() {
 	return (
 		<div>
 			<h2>Phonebook</h2>
-			<Notification message={successMessage} />
+			<Notification message={message} />
 			<Filter filter={filter} handleFilterChange={handleFilterChange} />
 			<h3>Add a new</h3>
 			<PersonForm
