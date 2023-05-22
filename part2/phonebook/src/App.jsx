@@ -1,12 +1,11 @@
 /** @format */
 
 import { useState, useEffect } from "react";
-import axios from "axios";
 import Filter from "./components/Filter.jsx";
 import PersonForm from "./components/PersonForm.jsx";
 import Persons from "./components/Persons.jsx";
 
-import personService from "./services/persons.jsx";
+import personService from "./services/persons.js";
 
 function App() {
 	const [persons, setPersons] = useState([]);
@@ -39,6 +38,14 @@ function App() {
 				setPersons(persons.concat(returnedPerson));
 				setNewNumber("");
 				setNewName("");
+			});
+		}
+	};
+
+	const handleDelete = (id, name) => {
+		if (window.confirm(`Delete ${name}?`)) {
+			personService.deletePerson(id).then(() => {
+				setPersons(personsToShow.filter((person) => person.id !== id));
 			});
 		}
 	};
@@ -77,7 +84,10 @@ function App() {
 				handleNumberChange={handleNumberChange}
 			/>
 			<h3>Numbers</h3>
-			<Persons personsToShow={personsToShow} />
+			<Persons
+				personsToShow={personsToShow}
+				handleDelete={handleDelete}
+			/>
 		</div>
 	);
 }
