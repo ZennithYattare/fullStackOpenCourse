@@ -3,6 +3,8 @@
 import React from "react";
 
 function Persons({ personsToShow, handleDelete }) {
+	if (!personsToShow) return null;
+
 	return (
 		<div>
 			{personsToShow.map((person) => (
