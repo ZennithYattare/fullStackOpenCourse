@@ -5,7 +5,7 @@ import Filter from "./components/Filter.jsx";
 import PersonForm from "./components/PersonForm.jsx";
 import Persons from "./components/Persons.jsx";
 
-import personService from "./services/persons.js";
+import personService from "./services/persons.jsx";
 
 function App() {
 	const [persons, setPersons] = useState([]);
