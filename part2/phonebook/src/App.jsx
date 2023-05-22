@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Filter from "./components/Filter.jsx";
 import PersonForm from "./components/PersonForm.jsx";
 import Persons from "./components/Persons.jsx";
+import Notification from "./components/Notification.jsx";
 
 import personService from "./services/persons.jsx";
 
@@ -12,6 +13,7 @@ function App() {
 	const [newName, setNewName] = useState("");
 	const [newNumber, setNewNumber] = useState("");
 	const [filter, setFilter] = useState("");
+	const [successMessage, setSuccessMessage] = useState(null);
 
 	useEffect(() => {
 		console.log("effect");
@@ -48,12 +50,22 @@ function App() {
 									: returnedPerson
 							)
 						);
+						setSuccessMessage(
+							`Updated ${returnedPerson.name}'s number.`
+						);
+						setTimeout(() => {
+							setSuccessMessage(null);
+						}, 5000);
 						setNewNumber("");
 						setNewName("");
 					});
 		} else {
 			personService.create(personObject).then((returnedPerson) => {
 				setPersons(persons.concat(returnedPerson));
+				setSuccessMessage(`Added ${returnedPerson.name}.`);
+				setTimeout(() => {
+					setSuccessMessage(null);
+				}, 5000);
 				setNewNumber("");
 				setNewName("");
 			});
@@ -64,6 +76,10 @@ function App() {
 		if (window.confirm(`Delete ${name}?`)) {
 			personService.deletePerson(id).then(() => {
 				setPersons(personsToShow.filter((person) => person.id !== id));
+				setSuccessMessage(`Deleted ${name}.`);
+				setTimeout(() => {
+					setSuccessMessage(null);
+				}, 5000);
 			});
 		}
 	};
@@ -92,6 +108,7 @@ function App() {
 	return (
 		<div>
 			<h2>Phonebook</h2>
+			<Notification message={successMessage} />
 			<Filter filter={filter} handleFilterChange={handleFilterChange} />
 			<h3>Add a new</h3>
 			<PersonForm
