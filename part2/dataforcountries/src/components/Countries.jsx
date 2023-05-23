@@ -2,6 +2,8 @@
 
 import React from "react";
 
+import Country from "./Country.jsx";
+
 function Countries({ filter, countries, handleShowClick }) {
 	return (
 		<>
@@ -10,26 +12,7 @@ function Countries({ filter, countries, handleShowClick }) {
 					<div>Too many matches, specify another filter</div>
 				)
 			) : countries.length === 1 ? (
-				countries.map((country) => (
-					<div key={country.name.common}>
-						<h2>{country.name.common}</h2>
-						<div>Capital: {country.capital}</div>
-						<div>Area: {country.area}</div>
-						<h3>Languages:</h3>
-						<ul>
-							{Object.values(country.languages).map(
-								(language) => (
-									<li key={language}>{language}</li>
-								)
-							)}
-						</ul>
-						<img
-							src={country.flags.png}
-							alt={`Flag of ${country.name.common}`}
-							width="200"
-						/>
-					</div>
-				))
+				<Country country={countries[0]} />
 			) : (
 				countries.map((country) => (
 					<div key={country.name.common}>
