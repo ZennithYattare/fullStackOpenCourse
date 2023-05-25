@@ -17,13 +17,13 @@ const unknownEndpoint = (request, response) => {
 	response.status(404).send({ error: "unknown endpoint" });
 };
 
+app.use(cors());
+app.use(express.json());
+app.use(requestLogger);
 app.use(express.static("dist"));
 // app.get("/", function (req, res) {
 // 	res.sendFile("index.html", { root: path.join(__dirname, "dist") });
 // });
-app.use(cors());
-app.use(express.json());
-app.use(requestLogger);
 morgan.token("body", (req, res) => JSON.stringify(req.body));
 app.use(
 	morgan(
