@@ -5,7 +5,10 @@ const app = express();
 const morgan = require("morgan");
 const cors = require("cors");
 
-app.use(express.static("build"));
+app.use(express.static("dist"));
+app.get("/", function (req, res) {
+	res.sendFile("index.html", { root: path.join(__dirname, "dist") });
+});
 app.use(cors());
 app.use(express.json());
 morgan.token("body", (req, res) => JSON.stringify(req.body));
