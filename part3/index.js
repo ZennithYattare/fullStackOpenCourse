@@ -18,9 +18,9 @@ const unknownEndpoint = (request, response) => {
 };
 
 app.use(express.static("dist"));
-app.get("/", function (req, res) {
-	res.sendFile("index.html", { root: path.join(__dirname, "dist") });
-});
+// app.get("/", function (req, res) {
+// 	res.sendFile("index.html", { root: path.join(__dirname, "dist") });
+// });
 app.use(cors());
 app.use(express.json());
 app.use(requestLogger);
