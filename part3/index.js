@@ -5,7 +5,7 @@ const app = express();
 
 app.use(express.json());
 
-const persons = [
+let persons = [
 	{
 		id: 1,
 		name: "Arto Hellas",
@@ -25,6 +25,11 @@ const persons = [
 		id: 4,
 		name: "Mary Poppendieck",
 		number: "39-23-6423122",
+	},
+	{
+		id: 5,
+		name: "Cheese",
+		number: "0987654321",
 	},
 ];
 
@@ -47,6 +52,13 @@ app.get("/api/persons/:id", (req, res) => {
 	} else {
 		res.status(404).end();
 	}
+});
+
+app.delete("/api/persons/:id", (req, res) => {
+	const id = Number(req.params.id);
+	persons = persons.filter((person) => person.id !== id);
+
+	res.status(204).end();
 });
 
 const PORT = 3001;
