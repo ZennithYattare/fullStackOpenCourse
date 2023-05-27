@@ -1,4 +1,7 @@
 /** @format */
+
+// This mongo.js is not used. Mongoose/MongoDB related actions is handled in part3/models/person.js
+
 // Make sure to turn off your VPN before running this script and/or use Google's DNS 8.8.8.8/8.8.4.4 . As the connection fails with VPN on.
 const mongoose = require("mongoose");
 
