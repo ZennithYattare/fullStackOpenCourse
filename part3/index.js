@@ -74,6 +74,20 @@ app.post("/api/persons", async (req, res) => {
 			console.log(error);
 		});
 });
+app.put("/api/persons/:id", (req, res, next) => {
+	const id = req.params.id;
+	const newPhoneNumber = req.body.number;
+
+	Person.findOneAndUpdate(
+		{ _id: id },
+		{ number: newPhoneNumber },
+		{ new: true }
+	)
+		.then((updatedPerson) => {
+			res.json(updatedPerson);
+		})
+		.catch((error) => next(error));
+});
 
 app.delete("/api/persons/:id", (req, res, next) => {
 	Person.findByIdAndRemove(req.params.id)
@@ -98,30 +112,8 @@ app.listen(PORT, () => {
 	console.log(`Server running on port ${PORT}`);
 });
 
-// app.put("/api/persons/:id", (req, res, next) => {
-// 	const body = req.body;
-
-// 	const person = {
-// 		name: body.name,
-// 		number: body.number,
-// 	};
-
-// 	Person.findByIdAndUpdate(req.params.id, person, { new: true })
-// 		.then((updatedPerson) => {
-// 			res.json(updatedPerson);
-// 		})
-// 		.catch((error) => next(error));
-// });
-
-// app.get("/info", (req, res) => {
-// 	const date = new Date();
-// 	const message = `<p>Phonebook has info for ${persons.length} people</p><p>${date}</p>`;
-// 	res.send(message);
-// });
-
-// app.delete("/api/persons/:id", (req, res) => {
-// 	const id = Number(req.params.id);
-// 	persons = persons.filter((person) => person.id !== id);
-
-// 	res.status(204).end();
-// });
+app.get("/info", (req, res) => {
+	const date = new Date();
+	const message = `<p>Phonebook has info for ${persons.length} people</p><p>${date}</p>`;
+	res.send(message);
+});
