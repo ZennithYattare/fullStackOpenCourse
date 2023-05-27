@@ -52,7 +52,7 @@ if (process.argv.length === 3) {
 
 	person
 		.save()
-		.then((result) => {
+		.then(() => {
 			console.log(
 				`added ${process.argv[3]} number ${process.argv[4]} to phonebook`
 			);

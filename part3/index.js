@@ -20,7 +20,7 @@ app.use(cors());
 app.use(express.json());
 app.use(requestLogger);
 app.use(express.static("dist"));
-morgan.token("body", (req, res) => JSON.stringify(req.body));
+morgan.token("body", (req) => JSON.stringify(req.body));
 app.use(
 	morgan(
 		":method :url :status :res[content-length] - :response-time ms :body"
@@ -51,7 +51,7 @@ app.get("/api/persons/:id", (req, res, next) => {
 		});
 });
 
-app.get("/info", (req, res) => {
+app.get("/info", (req, res, next) => {
 	Person.countDocuments({})
 		.then((count) => {
 			const info = `
@@ -102,7 +102,7 @@ app.put("/api/persons/:id", (req, res, next) => {
 
 app.delete("/api/persons/:id", (req, res, next) => {
 	Person.findByIdAndRemove(req.params.id)
-		.then((result) => {
+		.then(() => {
 			res.status(204).end();
 		})
 		.catch((error) => {
