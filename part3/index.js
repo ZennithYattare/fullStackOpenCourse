@@ -51,6 +51,18 @@ app.get("/api/persons/:id", (req, res, next) => {
 		});
 });
 
+app.get("/info", (req, res) => {
+	Person.countDocuments({})
+		.then((count) => {
+			const info = `
+        <p>Phonebook has info for ${count} people</p>
+        <p>${new Date()}</p>
+      `;
+			res.send(info);
+		})
+		.catch((error) => next(error));
+});
+
 app.post("/api/persons", async (req, res) => {
 	const body = req.body;
 
@@ -110,10 +122,4 @@ app.use(errorHandler);
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
 	console.log(`Server running on port ${PORT}`);
-});
-
-app.get("/info", (req, res) => {
-	const date = new Date();
-	const message = `<p>Phonebook has info for ${persons.length} people</p><p>${date}</p>`;
-	res.send(message);
 });
