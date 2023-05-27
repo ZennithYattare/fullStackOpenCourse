@@ -89,7 +89,7 @@ function App() {
 					setNewName("");
 				})
 				.catch((error) => {
-					console.log(error.response.data);
+					console.log(error.response.data.error);
 					setMessage({
 						message:
 							error.response.data.error || "Validation error",
