@@ -91,7 +91,8 @@ function App() {
 				.catch((error) => {
 					console.log(error.response.data);
 					setMessage({
-						message: error.response.data.error,
+						message:
+							error.response.data.error || "Validation error",
 						type: "error",
 					});
 					setTimeout(() => {
