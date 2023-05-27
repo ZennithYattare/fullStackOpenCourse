@@ -6,6 +6,7 @@ const app = express();
 const morgan = require("morgan");
 const cors = require("cors");
 const Person = require("./models/person");
+const errorHandler = require("./error-handler");
 
 const requestLogger = (request, response, next) => {
 	console.log("Method:", request.method);
@@ -13,10 +14,6 @@ const requestLogger = (request, response, next) => {
 	console.log("Body:  ", request.body);
 	console.log("---");
 	next();
-};
-
-const unknownEndpoint = (request, response) => {
-	response.status(404).send({ error: "unknown endpoint" });
 };
 
 app.use(cors());
@@ -37,6 +34,20 @@ app.get("/api/persons", async (req, res) => {
 		})
 		.catch((error) => {
 			console.log(error);
+		});
+});
+
+app.get("/api/persons/:id", (req, res, next) => {
+	Person.findById(req.params.id)
+		.then((person) => {
+			if (person) {
+				res.json(person);
+			} else {
+				res.status(404).end();
+			}
+		})
+		.catch((error) => {
+			next(error);
 		});
 });
 
@@ -64,23 +75,43 @@ app.post("/api/persons", async (req, res) => {
 		});
 });
 
-app.get("/api/persons/:id", (req, res) => {
-	Person.findById(req.params.id)
-		.then((person) => {
-			res.json(person);
+app.delete("/api/persons/:id", (req, res, next) => {
+	Person.findByIdAndRemove(req.params.id)
+		.then((result) => {
+			res.status(204).end();
 		})
 		.catch((error) => {
-			console.log(error);
-			res.status(404).end();
+			next(error);
 		});
 });
 
+const unknownEndpoint = (request, response) => {
+	response.status(404).send({ error: "unknown endpoint" });
+};
+
 app.use(unknownEndpoint);
+
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
 	console.log(`Server running on port ${PORT}`);
 });
+
+// app.put("/api/persons/:id", (req, res, next) => {
+// 	const body = req.body;
+
+// 	const person = {
+// 		name: body.name,
+// 		number: body.number,
+// 	};
+
+// 	Person.findByIdAndUpdate(req.params.id, person, { new: true })
+// 		.then((updatedPerson) => {
+// 			res.json(updatedPerson);
+// 		})
+// 		.catch((error) => next(error));
+// });
 
 // app.get("/info", (req, res) => {
 // 	const date = new Date();
