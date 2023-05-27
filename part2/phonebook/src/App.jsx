@@ -79,7 +79,7 @@ function App() {
 				.then((returnedPerson) => {
 					setPersons(persons.concat(returnedPerson));
 					setMessage({
-						message: `Updated ${returnedPerson.name}.`,
+						message: `Added ${returnedPerson.name}.`,
 						type: "success",
 					});
 					setTimeout(() => {
