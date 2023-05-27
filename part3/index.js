@@ -63,7 +63,7 @@ app.get("/info", (req, res) => {
 		.catch((error) => next(error));
 });
 
-app.post("/api/persons", async (req, res) => {
+app.post("/api/persons", async (req, res, next) => {
 	const body = req.body;
 
 	if (!body.name || !body.number) {
@@ -82,10 +82,9 @@ app.post("/api/persons", async (req, res) => {
 		.then((savedPerson) => {
 			res.json(savedPerson);
 		})
-		.catch((error) => {
-			console.log(error);
-		});
+		.catch((error) => next(error));
 });
+
 app.put("/api/persons/:id", (req, res, next) => {
 	const id = req.params.id;
 	const newPhoneNumber = req.body.number;
@@ -93,7 +92,7 @@ app.put("/api/persons/:id", (req, res, next) => {
 	Person.findOneAndUpdate(
 		{ _id: id },
 		{ number: newPhoneNumber },
-		{ new: true }
+		{ new: true, runValidators: true, context: "query" }
 	)
 		.then((updatedPerson) => {
 			res.json(updatedPerson);
