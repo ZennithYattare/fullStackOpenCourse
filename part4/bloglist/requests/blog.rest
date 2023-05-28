@@ -18,11 +18,11 @@ POST {{baseUrl}}/api/blogs HTTP/1.1
 content-type: application/json
 
 {
-    "title": "Node.js",
-    "author": "Jane Smith",
-    "url": "https://nodejs.org",
-    "likes": 20
-  }
+    "title": "MongoDB",
+    "author": "Bob Johnson",
+    "url": "https://mongodb.com",
+    "likes": 30
+}
 
 ###
 # PUT request to update a person's number in the database
