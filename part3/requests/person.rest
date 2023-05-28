@@ -1,0 +1,37 @@
+@baseUrl=http://localhost:3001
+@userId=647264cb0d14a31705c2f11c
+
+# GET request for all persons in the database
+GET  {{baseUrl}}/api/persons HTTP/1.1
+
+###
+# GET request for a single person in the database
+GET  {{baseUrl}}/api/persons/{{userId}} HTTP/1.1
+
+###
+# GET request for the info of the database
+GET  {{baseUrl}}/info HTTP/1.1
+
+###
+# POST request to create a person in the database
+POST {{baseUrl}}/api/persons HTTP/1.1
+content-type: application/json
+
+{
+    "name": "aaaa",
+    "number": "040-1234556"
+}
+
+###
+# PUT request to update a person's number in the database
+PUT {{baseUrl}}/api/persons/{{userId}} HTTP/1.1
+content-type: application/json
+
+{
+    "name": "aaaa",
+    "number": "323-6423122"
+}
+
+###
+# DELETE request to delete a person from the database
+DELETE {{baseUrl}}/api/persons/{{userId}} HTTP/1.1
