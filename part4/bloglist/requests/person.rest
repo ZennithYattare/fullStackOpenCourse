@@ -1,0 +1,39 @@
+@baseUrl=http://localhost:3003
+@userId=
+
+# GET request for all blogs in the database
+GET  {{baseUrl}}/api/blogs HTTP/1.1
+
+###
+# GET request for a single blog in the database
+GET  {{baseUrl}}/api/persons/{{userId}} HTTP/1.1
+
+###
+# GET request for the info of the database
+GET  {{baseUrl}}/info HTTP/1.1
+
+###
+# POST request to create a blog in the database
+POST {{baseUrl}}/api/blogs HTTP/1.1
+content-type: application/json
+
+{
+    "title": "Node.js",
+    "author": "Jane Smith",
+    "url": "https://nodejs.org",
+    "likes": 20
+  }
+
+###
+# PUT request to update a person's number in the database
+PUT {{baseUrl}}/api/persons/{{userId}} HTTP/1.1
+content-type: application/json
+
+{
+    "name": "aaaa",
+    "number": "323-6423122"
+}
+
+###
+# DELETE request to delete a person from the database
+DELETE {{baseUrl}}/api/persons/{{userId}} HTTP/1.1
