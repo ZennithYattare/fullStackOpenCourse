@@ -13,10 +13,7 @@ const morgan = require("morgan");
 logger.info("connecting to", config.MONGODB_URI);
 
 mongoose
-	.connect(config.MONGODB_URI, {
-		useNewUrlParser: true,
-		useUnifiedTopology: true,
-	})
+	.connect(config.MONGODB_URI)
 	.then(() => {
 		console.log("Connected to MongoDB.");
 	})
