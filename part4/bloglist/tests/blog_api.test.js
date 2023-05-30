@@ -58,6 +58,18 @@ describe("blogs", () => {
 		const titles = blogsAtEnd.map((blog) => blog.title);
 		expect(titles).toContain("New blog post");
 	});
+
+	test("if likes property is missing, it defaults to 0", async () => {
+		const newBlog = {
+			title: "New blog post",
+			author: "John Doe",
+			url: "https://example.com/new-blog-post",
+		};
+
+		const response = await api.post("/api/blogs").send(newBlog).expect(201);
+
+		expect(response.body.likes).toBe(0);
+	});
 });
 
 afterAll(async () => {
