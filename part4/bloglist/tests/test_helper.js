@@ -1,6 +1,12 @@
 /** @format */
 
 const Blog = require("../models/blog");
+const User = require("../models/user");
+
+const usersInDb = async () => {
+	const users = await User.find({});
+	return users.map((user) => user.toJSON());
+};
 
 const initialBlogs = [
 	{
@@ -34,7 +40,22 @@ const blogsInDb = async () => {
 	return blogs.map((blog) => blog.toJSON());
 };
 
+const nonExistingId = async () => {
+	const blog = new Blog({
+		title: "willremovethissoon",
+		author: "unknown",
+		url: "http://localhost:3001/api/blogs",
+		likes: 0,
+	});
+	await blog.save();
+	await blog.remove();
+
+	return blog._id.toString();
+};
+
 module.exports = {
+	nonExistingId,
 	initialBlogs,
 	blogsInDb,
+	usersInDb,
 };
