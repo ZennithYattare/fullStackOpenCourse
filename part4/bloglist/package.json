@@ -9,7 +9,7 @@
 		"test": "cross-env NODE_ENV=test jest --verbose --runInBand",
 		"lint": "eslint ."
 	},
-	"proxy": "http://localhost:3001",
+	"proxy": "http://localhost:3003",
 	"keywords": [],
 	"author": "",
 	"license": "MIT",
@@ -29,6 +29,7 @@
 		"supertest": "^6.3.3"
 	},
 	"jest": {
-		"testEnvironment": "node"
+		"testEnvironment": "node",
+		"globalTeardown": "./tests/teardown.js"
 	}
 }
