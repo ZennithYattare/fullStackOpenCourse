@@ -11,7 +11,11 @@ blogsRouter.get("/", async (request, response) => {
 	response.json(blogs);
 });
 
-// Added the following middleware to the route handler for the HTTP POST request to the /api/blogs endpoint as using it in the app.js as app.use(middleware.tokenExtractor) and/or app.use(middleware.verifyToken) applied to the GET route which does not need authentication to see all the blogs.
+// Added the following middleware to the route handler for the HTTP POST request to the /api/blogs endpoint as using it in the app.js as using the following:
+// app.use(middleware.tokenExtractor)
+// app.use(middleware.verifyToken)
+// app.use('/api/blogs', middleware.verifyToken, blogsRouter)
+// applied to the GET route which does not need authentication to see all the blogs.
 blogsRouter.post(
 	"/",
 	middleware.tokenExtractor,
@@ -59,10 +63,40 @@ blogsRouter.put("/:id", async (request, response) => {
 	response.json(updatedBlog.toJSON());
 });
 
-blogsRouter.delete("/:id", async (request, response) => {
-	await Blog.findByIdAndRemove(request.params.id);
-	response.status(204).end();
-});
+blogsRouter.delete(
+	"/:id",
+	middleware.tokenExtractor,
+	middleware.verifyToken,
+	async (request, response) => {
+		const decodedToken = jwt.verify(request.token, process.env.SECRET);
+
+		if (!decodedToken.id) {
+			return response.status(401).json({ error: "token invalid" });
+		}
+
+		const blog = await Blog.findById(request.params.id);
+
+		if (!blog) {
+			return response.status(404).json({ error: "blog not found" });
+		}
+
+		if (blog.user.toString() !== decodedToken.id.toString()) {
+			return response
+				.status(401)
+				.json({ error: "not authorized to delete this blog" });
+		}
+
+		const user = await User.findById(decodedToken.id);
+		user.blogs = user.blogs.filter(
+			(b) => b.toString() !== blog._id.toString()
+		);
+		await user.save();
+
+		await Blog.findByIdAndRemove(request.params.id);
+
+		response.status(204).end();
+	}
+);
 
 // export
 module.exports = blogsRouter;
