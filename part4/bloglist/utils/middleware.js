@@ -32,7 +32,7 @@ const errorHandler = (error, request, response, next) => {
 };
 
 const tokenExtractor = (request, response, next) => {
-	logger.info(request.get("authorization"));
+	// logger.info(request.get("authorization"));
 	const authorization = request.get("authorization");
 
 	if (authorization && authorization.toLowerCase().startsWith("bearer ")) {
