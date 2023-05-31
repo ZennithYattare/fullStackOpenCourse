@@ -4,8 +4,9 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const loginRouter = require("express").Router();
 const User = require("../models/user");
+const middleware = require("../utils/middleware");
 
-loginRouter.post("/", async (request, response) => {
+loginRouter.post("/", middleware.tokenExtractor, async (request, response) => {
 	const { username, password } = request.body;
 
 	const user = await User.findOne({ username });
