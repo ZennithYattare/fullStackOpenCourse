@@ -7,3 +7,12 @@ Content-Type: application/json
     "username": "janedoe",
     "password": "password123"
 }
+
+###
+POST {{baseUrl}}/api/login
+Content-Type: application/json
+
+{
+    "username": "johndoe",
+    "password": "password123"
+}
