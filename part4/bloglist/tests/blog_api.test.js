@@ -232,6 +232,30 @@ describe("deletion of a blog", () => {
 
 		expect(titles).not.toContain(blogToDelete.title);
 	});
+
+	test("fails with 401 if token is not provided", async () => {
+		const blogsAtStart = await helper.blogsInDb();
+		const blogToDelete = addedBlog;
+
+		await api.delete(`/api/blogs/${blogToDelete.id}`).expect(401);
+
+		const blogsAtEnd = await helper.blogsInDb();
+
+		expect(blogsAtEnd).toHaveLength(blogsAtStart.length);
+	});
+
+	test("fails with 404 if blog does not exist", async () => {
+		const nonExistingId = await helper.nonExistingId();
+
+		await api
+			.delete(`/api/blogs/${nonExistingId}`)
+			.set("Authorization", `Bearer ${token}`)
+			.expect(404);
+
+		const blogsAtEnd = await helper.blogsInDb();
+
+		expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1);
+	});
 });
 
 describe("when there is initially one user in db", () => {
