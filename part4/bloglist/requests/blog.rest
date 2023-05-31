@@ -16,13 +16,13 @@ GET  {{baseUrl}}/info HTTP/1.1
 # POST request to create a blog in the database
 POST {{baseUrl}}/api/blogs HTTP/1.1
 content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImphbmVkb2UiLCJpZCI6IjY0NzYzNjE4MmI2ZjNjNjgyZjg2ZGMyMSIsImlhdCI6MTY4NTUzMTM3OH0.BToXyaq6ErBDzRBadPeqgiqWC7LQ7E3-lfHdTSoD0Xk
 
 {
-    "title": "MongoDB",
-    "author": "Bob Johnson",
-    "url": "https://mongodb.com",
-    "likes": 30,
-    "user": "647636182b6f3c682f86dc21"
+    "title": "Angular",
+    "author": "Jane Doe",
+    "url": "https://angular.io",
+    "likes": 15
 }
 
 ###
