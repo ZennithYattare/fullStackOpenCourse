@@ -175,11 +175,31 @@ describe("when there is initially one user in db", () => {
 		expect(usernames).toContain(newUser.username);
 	});
 
-	test("creation fails with proper statuscode and message if username already taken", async () => {
+	test("creation fails with proper statuscode and message if username is already taken", async () => {
 		const usersAtStart = await helper.usersInDb();
 
 		const newUser = {
-			username: "janedoe",
+			username: "root",
+			name: "Root Doe",
+			password: "password123",
+		};
+
+		const result = await api
+			.post("/api/users")
+			.send(newUser)
+			.expect(400)
+			.expect("Content-Type", /application\/json/);
+
+		expect(result.body.error).toContain("username must be unique");
+
+		const usersAtEnd = await helper.usersInDb();
+		expect(usersAtEnd).toEqual(usersAtStart);
+	});
+
+	test("creation fails with proper statuscode and message if username is missing", async () => {
+		const usersAtStart = await helper.usersInDb();
+
+		const newUser = {
 			name: "Jane Doe",
 			password: "password123",
 		};
@@ -190,7 +210,54 @@ describe("when there is initially one user in db", () => {
 			.expect(400)
 			.expect("Content-Type", /application\/json/);
 
-		expect(result.body.error).toContain("expected `username` to be unique");
+		expect(result.body.error).toContain(
+			"username and password are required"
+		);
+
+		const usersAtEnd = await helper.usersInDb();
+		expect(usersAtEnd).toEqual(usersAtStart);
+	});
+
+	test("creation fails with proper statuscode and message if username is too short", async () => {
+		const usersAtStart = await helper.usersInDb();
+
+		const newUser = {
+			username: "jd",
+			name: "Jane Doe",
+			password: "password123",
+		};
+
+		const result = await api
+			.post("/api/users")
+			.send(newUser)
+			.expect(400)
+			.expect("Content-Type", /application\/json/);
+
+		expect(result.body.error).toContain(
+			"username and password must be at least 3 characters long"
+		);
+
+		const usersAtEnd = await helper.usersInDb();
+		expect(usersAtEnd).toEqual(usersAtStart);
+	});
+
+	test("creation fails with proper statuscode and message if password is missing", async () => {
+		const usersAtStart = await helper.usersInDb();
+
+		const newUser = {
+			username: "janedoe",
+			name: "Jane Doe",
+		};
+
+		const result = await api
+			.post("/api/users")
+			.send(newUser)
+			.expect(400)
+			.expect("Content-Type", /application\/json/);
+
+		expect(result.body.error).toContain(
+			"username and password are required"
+		);
 
 		const usersAtEnd = await helper.usersInDb();
 		expect(usersAtEnd).toEqual(usersAtStart);
