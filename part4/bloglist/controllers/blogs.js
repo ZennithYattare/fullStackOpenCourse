@@ -80,7 +80,7 @@ blogsRouter.delete(
 			return response.status(404).json({ error: "blog not found" });
 		}
 
-		if (blog.user.toString() !== decodedToken.id.toString()) {
+		if (!blog.user || blog.user.toString() !== decodedToken.id.toString()) {
 			return response
 				.status(401)
 				.json({ error: "not authorized to delete this blog" });
