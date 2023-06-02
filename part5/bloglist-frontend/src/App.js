@@ -4,12 +4,14 @@ import { useState, useEffect } from "react";
 import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
+import Notification from "./components/Notification";
 
 const App = () => {
 	const [blogs, setBlogs] = useState([]);
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [user, setUser] = useState(null);
+	const [message, setMessage] = useState(null);
 	const [newBlog, setNewBlog] = useState({
 		title: "",
 		author: "",
@@ -42,16 +44,24 @@ const App = () => {
 			setUser(user);
 			setUsername("");
 			setPassword("");
+			setMessage({ message: "Logged in successfully!", type: "success" });
+			setTimeout(() => {
+				setMessage(null);
+			}, 5000);
 		} catch (exception) {
-			// setErrorMessage("Wrong credentials");
-			// setTimeout(() => {
-			// 	setErrorMessage(null);
-			// }, 5000);
+			setMessage({ message: "Wrong credentials", type: "error" });
+			setTimeout(() => {
+				setMessage(null);
+			}, 5000);
 		}
 	};
 
 	const handleLogout = () => {
 		window.localStorage.removeItem("loggedInUser");
+		setMessage({ message: "Logged out successfully!", type: "success" });
+		setTimeout(() => {
+			setMessage(null);
+		}, 5000);
 		setUser(null);
 	};
 
@@ -74,8 +84,19 @@ const App = () => {
 				author: "",
 				url: "",
 			});
+			setMessage({
+				message: `Blog "${newBlog.title}" created successfully!`,
+				type: "success",
+			});
+			setTimeout(() => {
+				setMessage(null);
+			}, 5000);
 		} catch (exception) {
 			console.error(exception);
+			setMessage({ message: "Error creating blog", type: "error" });
+			setTimeout(() => {
+				setMessage(null);
+			}, 5000);
 		}
 	};
 
@@ -139,6 +160,7 @@ const App = () => {
 
 	return (
 		<div>
+			{message && <Notification message={message} />}
 			{user === null ? (
 				loginForm()
 			) : (
