@@ -103,6 +103,35 @@ const App = () => {
 		}
 	};
 
+	const handleLike = async (blog) => {
+		const updatedBlog = {
+			...blog,
+			likes: blog.likes + 1,
+		};
+
+		try {
+			const returnedBlog = await blogService.update(blog.id, updatedBlog);
+			setBlogs((prevBlogs) =>
+				prevBlogs.map((b) =>
+					b.id === returnedBlog.id ? returnedBlog : b
+				)
+			);
+			setMessage({
+				message: `Blog "${blog.title}" liked successfully!`,
+				type: "success",
+			});
+			setTimeout(() => {
+				setMessage(null);
+			}, 5000);
+		} catch (exception) {
+			console.error(exception);
+			setMessage({ message: "Error updating blog", type: "error" });
+			setTimeout(() => {
+				setMessage(null);
+			}, 5000);
+		}
+	};
+
 	return (
 		<div>
 			{message && <Notification message={message} />}
@@ -140,7 +169,12 @@ const App = () => {
 						</Togglable>
 					}
 					{blogs.map((blog) => (
-						<Blog key={blog.id} blog={blog} user={user} />
+						<Blog
+							key={blog.id}
+							blog={blog}
+							user={user}
+							handleLike={() => handleLike(blog)}
+						/>
 					))}
 				</>
 			)}

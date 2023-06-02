@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 
-const Blog = ({ blog, user }) => {
+const Blog = ({ blog, user, handleLike }) => {
 	const blogStyle = {
 		paddingTop: 10,
 		paddingLeft: 2,
@@ -29,7 +29,8 @@ const Blog = ({ blog, user }) => {
 				<div>
 					<a href={blog.url}>{blog.url}</a>
 					<p>
-						likes {blog.likes} <button>like</button>
+						likes {blog.likes}{" "}
+						<button onClick={handleLike}>Like</button>
 					</p>
 					<p>{blog.user.name}</p>
 					{user && user.username === blog.user.username && (
