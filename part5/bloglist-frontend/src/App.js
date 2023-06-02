@@ -10,6 +10,11 @@ const App = () => {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [user, setUser] = useState(null);
+	const [newBlog, setNewBlog] = useState({
+		title: "",
+		author: "",
+		url: "",
+	});
 
 	useEffect(() => {
 		const loggedUserJSON = window.localStorage.getItem("loggedInUser");
@@ -33,6 +38,7 @@ const App = () => {
 			});
 
 			window.localStorage.setItem("loggedInUser", JSON.stringify(user));
+			blogService.setToken(user.token);
 			setUser(user);
 			setUsername("");
 			setPassword("");
@@ -47,6 +53,30 @@ const App = () => {
 	const handleLogout = () => {
 		window.localStorage.removeItem("loggedInUser");
 		setUser(null);
+	};
+
+	const handleBlogChange = (event) => {
+		const { name, value } = event.target;
+		setNewBlog((prevBlog) => ({
+			...prevBlog,
+			[name]: value,
+		}));
+	};
+
+	const handleBlogSubmit = async (event) => {
+		event.preventDefault();
+
+		try {
+			const createdBlog = await blogService.create(newBlog);
+			setBlogs((prevBlogs) => [...prevBlogs, createdBlog]);
+			setNewBlog({
+				title: "",
+				author: "",
+				url: "",
+			});
+		} catch (exception) {
+			console.error(exception);
+		}
 	};
 
 	const loginForm = () => (
@@ -74,6 +104,39 @@ const App = () => {
 		</form>
 	);
 
+	const blogForm = () => (
+		<form onSubmit={handleBlogSubmit}>
+			<div>
+				<label htmlFor="title">Title:</label>
+				<input
+					type="text"
+					name="title"
+					value={newBlog.title}
+					onChange={handleBlogChange}
+				/>
+			</div>
+			<div>
+				<label htmlFor="author">Author:</label>
+				<input
+					type="text"
+					name="author"
+					value={newBlog.author}
+					onChange={handleBlogChange}
+				/>
+			</div>
+			<div>
+				<label htmlFor="url">URL:</label>
+				<input
+					type="text"
+					name="url"
+					value={newBlog.url}
+					onChange={handleBlogChange}
+				/>
+			</div>
+			<button type="submit">Create</button>
+		</form>
+	);
+
 	return (
 		<div>
 			{user === null ? (
@@ -87,6 +150,7 @@ const App = () => {
 							<button onClick={handleLogout}>logout</button>
 						</div>
 					)}
+					{blogForm()}
 					{blogs.map((blog) => (
 						<Blog key={blog.id} blog={blog} />
 					))}
