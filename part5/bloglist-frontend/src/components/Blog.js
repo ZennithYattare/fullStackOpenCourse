@@ -31,7 +31,7 @@ const Blog = ({ blog, user, handleLike, handleBlogDelete }) => {
 				<p>
 					{blog.title} - {blog.author}
 				</p>
-				<button onClick={toggleDetails}>
+				<button data-testid="viewButton" onClick={toggleDetails}>
 					{showDetails ? "hide" : "view"}
 				</button>
 			</div>

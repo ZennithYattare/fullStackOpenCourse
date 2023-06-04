@@ -2,7 +2,8 @@
 
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
-import { render } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
+// import userEvent from "@testing-library/user-event";
 import Blog from "./Blog";
 
 describe("Blog component", () => {
@@ -24,5 +25,17 @@ describe("Blog component", () => {
 		expect(div).toHaveTextContent(`${blog.title} - ${blog.author}`);
 		expect(div).not.toHaveTextContent(blog.url);
 		expect(div).not.toHaveTextContent(`likes ${blog.likes}`);
+	});
+
+	test("renders title and author by default, but shows URL and likes when 'view' button is clicked", async () => {
+		const { container } = render(<Blog blog={blog} />);
+
+		const button = screen.getByTestId("viewButton");
+		fireEvent.click(button);
+
+		const div = container.querySelector(".blogsList");
+		expect(div).toHaveTextContent(`${blog.title} - ${blog.author}`);
+		expect(div).toHaveTextContent(blog.url);
+		expect(div).toHaveTextContent(`likes ${blog.likes}`);
 	});
 });
