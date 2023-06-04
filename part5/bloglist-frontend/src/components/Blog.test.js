@@ -19,23 +19,38 @@ describe("Blog component", () => {
 	};
 
 	test("renders title and author, but not URL or likes by default", () => {
-		const { container } = render(<Blog blog={blog} />);
+		render(<Blog blog={blog} />);
 
-		const div = container.querySelector(".blogsList");
+		const div = screen.getByTestId("blogsList");
 		expect(div).toHaveTextContent(`${blog.title} - ${blog.author}`);
 		expect(div).not.toHaveTextContent(blog.url);
 		expect(div).not.toHaveTextContent(`likes ${blog.likes}`);
 	});
 
 	test("renders title and author by default, but shows URL and likes when 'view' button is clicked", async () => {
-		const { container } = render(<Blog blog={blog} />);
+		render(<Blog blog={blog} />);
 
 		const button = screen.getByTestId("viewButton");
 		fireEvent.click(button);
 
-		const div = container.querySelector(".blogsList");
+		const div = screen.getByTestId("blogsList");
 		expect(div).toHaveTextContent(`${blog.title} - ${blog.author}`);
 		expect(div).toHaveTextContent(blog.url);
 		expect(div).toHaveTextContent(`likes ${blog.likes}`);
+	});
+
+	test("calls the event handler twice when 'like' button is clicked twice", () => {
+		const mockHandler = jest.fn();
+
+		render(<Blog blog={blog} handleLike={mockHandler} />);
+
+		const button = screen.getByTestId("viewButton");
+		fireEvent.click(button);
+
+		const likeButton = screen.getByTestId("likeButton");
+		fireEvent.click(likeButton);
+		fireEvent.click(likeButton);
+
+		expect(mockHandler.mock.calls).toHaveLength(2);
 	});
 });
