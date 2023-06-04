@@ -15,11 +15,6 @@ const App = () => {
 	const [password, setPassword] = useState("");
 	const [user, setUser] = useState(null);
 	const [message, setMessage] = useState(null);
-	const [newBlog, setNewBlog] = useState({
-		title: "",
-		author: "",
-		url: "",
-	});
 
 	useEffect(() => {
 		const loggedUserJSON = window.localStorage.getItem("loggedInUser");
@@ -72,25 +67,10 @@ const App = () => {
 		setUser(null);
 	};
 
-	const handleBlogChange = (event) => {
-		const { name, value } = event.target;
-		setNewBlog((prevBlog) => ({
-			...prevBlog,
-			[name]: value,
-		}));
-	};
-
-	const handleBlogSubmit = async (event) => {
-		event.preventDefault();
-
+	const handleBlogSubmit = async (newBlog) => {
 		try {
 			const createdBlog = await blogService.create(newBlog);
 			setBlogs((prevBlogs) => [...prevBlogs, createdBlog]);
-			setNewBlog({
-				title: "",
-				author: "",
-				url: "",
-			});
 			setMessage({
 				message: `Blog "${newBlog.title}" created successfully!`,
 				type: "success",
@@ -189,11 +169,7 @@ const App = () => {
 					)}
 					{
 						<Togglable buttonLabel="Create new blog">
-							<BlogForm
-								handleBlogSubmit={handleBlogSubmit}
-								handleBlogChange={handleBlogChange}
-								newBlog={newBlog}
-							/>
+							<BlogForm handleBlogSubmit={handleBlogSubmit} />
 						</Togglable>
 					}
 					{blogs.map((blog) => (
