@@ -26,9 +26,11 @@ const Blog = ({ blog, user, handleLike, handleBlogDelete }) => {
 	};
 
 	return (
-		<div style={blogStyle}>
+		<div className="blogsList" style={blogStyle}>
 			<div>
-				{blog.title} {blog.author}{" "}
+				<p>
+					{blog.title} - {blog.author}
+				</p>
 				<button onClick={toggleDetails}>
 					{showDetails ? "hide" : "view"}
 				</button>
