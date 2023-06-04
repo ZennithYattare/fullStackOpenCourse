@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 
-const Blog = ({ blog, user, handleLike }) => {
+const Blog = ({ blog, user, handleLike, handleBlogDelete }) => {
 	const blogStyle = {
 		paddingTop: 10,
 		paddingLeft: 2,
@@ -15,6 +15,14 @@ const Blog = ({ blog, user, handleLike }) => {
 
 	const toggleDetails = () => {
 		setShowDetails(!showDetails);
+	};
+
+	const handleDelete = () => {
+		if (user && user.username === blog.user.username) {
+			return (
+				<button onClick={() => handleBlogDelete(blog)}>delete</button>
+			);
+		}
 	};
 
 	return (
@@ -33,9 +41,7 @@ const Blog = ({ blog, user, handleLike }) => {
 						<button onClick={handleLike}>Like</button>
 					</p>
 					<p>{blog.user.name}</p>
-					{user && user.username === blog.user.username && (
-						<button>delete</button>
-					)}
+					{handleDelete()}
 				</div>
 			)}
 		</div>

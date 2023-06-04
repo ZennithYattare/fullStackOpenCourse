@@ -26,6 +26,7 @@ const App = () => {
 		if (loggedUserJSON) {
 			const user = JSON.parse(loggedUserJSON);
 			setUser(user);
+			blogService.setToken(user.token);
 		}
 	}, []);
 
@@ -135,6 +136,30 @@ const App = () => {
 		}
 	};
 
+	const handleBlogDelete = async (blog) => {
+		if (window.confirm(`Remove blog "${blog.title}" by ${blog.author} ?`)) {
+			try {
+				await blogService.removeBlog(blog.id);
+				setBlogs((prevBlogs) =>
+					prevBlogs.filter((b) => b.id !== blog.id)
+				);
+				setMessage({
+					message: `Blog "${blog.title}" deleted successfully!`,
+					type: "success",
+				});
+				setTimeout(() => {
+					setMessage(null);
+				}, 5000);
+			} catch (exception) {
+				console.error(exception);
+				setMessage({ message: "Error deleting blog", type: "error" });
+				setTimeout(() => {
+					setMessage(null);
+				}, 5000);
+			}
+		}
+	};
+
 	return (
 		<div>
 			{message && <Notification message={message} />}
@@ -177,6 +202,7 @@ const App = () => {
 							blog={blog}
 							user={user}
 							handleLike={() => handleLike(blog)}
+							handleBlogDelete={handleBlogDelete}
 						/>
 					))}
 				</>
