@@ -41,6 +41,7 @@ blogsRouter.post(
 			user: user._id,
 		});
 
+		await blog.populate("user", { blogs: 0 });
 		const savedBlog = await blog.save();
 		user.blogs = user.blogs.concat(savedBlog._id);
 		await user.save();
