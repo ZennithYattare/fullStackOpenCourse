@@ -32,14 +32,14 @@ const Blog = ({ blog, user, handleLike, handleBlogDelete }) => {
 					{blog.title} - {blog.author}
 				</p>
 				<button data-testid="viewButton" onClick={toggleDetails}>
-					{showDetails ? "hide" : "view"}
+					{showDetails ? "Hide" : "View"}
 				</button>
 			</div>
 			{showDetails && (
 				<div>
 					<a href={blog.url}>{blog.url}</a>
 					<p>
-						likes {blog.likes}{" "}
+						Likes: {blog.likes}{" "}
 						<button data-testid="likeButton" onClick={handleLike}>
 							Like
 						</button>
