@@ -96,5 +96,30 @@ describe("Blog app", () => {
 			cy.get("html").should("not.contain", "Test Blog Title");
 			cy.get("html").should("not.contain", "Test Blog Author");
 		});
+
+		it("only the creator can see the delete button of a blog", () => {
+			cy.contains("Create new blog").click();
+			cy.get("#blogFormTitle").type("Test Blog Title");
+			cy.get("#blogFormAuthor").type("Test Blog Author");
+			cy.get("#blogFormUrl").type("http://testblog.com");
+			cy.get("#blogFormSubmitButton").click();
+			cy.contains("Test Blog Title");
+			cy.contains("Test Blog Author");
+			cy.contains("View").click();
+			cy.contains("Delete");
+			cy.contains("Logout").click();
+			const user2 = {
+				name: "Test User 2",
+				username: "testuser2",
+				password: "testpassword2",
+			};
+			cy.request("POST", `${Cypress.env("BACKEND")}/users`, user2);
+			cy.get("#username").type("testuser2");
+			cy.get("#password").type("testpassword2");
+			cy.get("#loginButton").click();
+			cy.contains("Logged in successfully!");
+			cy.contains("View").click();
+			cy.get("html").should("not.contain", "Delete");
+		});
 	});
 });

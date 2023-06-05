@@ -24,7 +24,7 @@ const Blog = ({ blog, user, handleLike, handleBlogDelete }) => {
 					id="blogDeleteButton"
 					onClick={() => handleBlogDelete(blog)}
 				>
-					delete
+					Delete
 				</button>
 			);
 		}
