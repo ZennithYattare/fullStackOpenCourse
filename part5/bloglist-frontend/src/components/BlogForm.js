@@ -61,7 +61,7 @@ const BlogForm = ({ handleBlogSubmit }) => {
 					id="blogFormUrl"
 				/>
 			</div>
-			<button type="submit">Create</button>
+			<button id="blogFormSubmitButton" type="submit">Create</button>
 		</form>
 	);
 };
