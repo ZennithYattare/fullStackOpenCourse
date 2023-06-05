@@ -31,7 +31,7 @@ const Blog = ({ blog, user, handleLike, handleBlogDelete }) => {
 	};
 
 	return (
-		<div data-testid="blogsList" style={blogStyle}>
+		<div data-testid="blogsList" className="blog" style={blogStyle}>
 			<div>
 				<p>
 					{blog.title} - {blog.author}
