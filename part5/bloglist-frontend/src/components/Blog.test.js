@@ -35,7 +35,7 @@ describe("Blog component", () => {
 		const div = screen.getByTestId("blogsList");
 		expect(div).toHaveTextContent(`${blog.title} - ${blog.author}`);
 		expect(div).toHaveTextContent(blog.url);
-		expect(div).toHaveTextContent(`likes ${blog.likes}`);
+		expect(div).toHaveTextContent(`Likes: ${blog.likes}`);
 	});
 
 	test("calls the event handler twice when 'like' button is clicked twice", () => {
