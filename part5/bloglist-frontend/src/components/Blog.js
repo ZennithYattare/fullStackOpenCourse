@@ -20,7 +20,12 @@ const Blog = ({ blog, user, handleLike, handleBlogDelete }) => {
 	const handleDelete = () => {
 		if (user && user.username === blog.user.username) {
 			return (
-				<button onClick={() => handleBlogDelete(blog)}>delete</button>
+				<button
+					id="blogDeleteButton"
+					onClick={() => handleBlogDelete(blog)}
+				>
+					delete
+				</button>
 			);
 		}
 	};

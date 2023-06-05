@@ -82,5 +82,19 @@ describe("Blog app", () => {
 			cy.contains("Like").click();
 			cy.contains("Likes: 1");
 		});
+
+		it("the user who created a blog can delete it", () => {
+			cy.contains("Create new blog").click();
+			cy.get("#blogFormTitle").type("Test Blog Title");
+			cy.get("#blogFormAuthor").type("Test Blog Author");
+			cy.get("#blogFormUrl").type("http://testblog.com");
+			cy.get("#blogFormSubmitButton").click();
+			cy.contains("Test Blog Title");
+			cy.contains("Test Blog Author");
+			cy.contains("View").click();
+			cy.get("#blogDeleteButton").click();
+			cy.get("html").should("not.contain", "Test Blog Title");
+			cy.get("html").should("not.contain", "Test Blog Author");
+		});
 	});
 });
