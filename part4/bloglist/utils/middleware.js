@@ -2,12 +2,27 @@
 
 const logger = require("./logger");
 const jwt = require("jsonwebtoken");
+const http = require("http");
 
 const requestLogger = (request, response, next) => {
+	const now = new Date();
+	const formattedDate = now.toLocaleString();
+	logger.info("---");
+	logger.info("Time:", formattedDate);
 	logger.info("Method:", request.method);
 	logger.info("Path:  ", request.path);
 	logger.info("Body:  ", request.body);
-	logger.info("---");
+	const start = Date.now();
+	response.on("finish", () => {
+		const elapsed = Date.now() - start;
+		const message = `${elapsed}ms`;
+		logger.info("Response Time: ", message);
+		logger.info(
+			"Status: ",
+			response.statusCode,
+			http.STATUS_CODES[response.statusCode]
+		);
+	});
 	next();
 };
 
