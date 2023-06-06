@@ -5,7 +5,7 @@ import { incrementVote } from "../reducers/anecdoteReducer";
 function AnecdoteList() {
 	const dispatch = useDispatch();
 	const anecdotes = useSelector(({ filter, anecdotes }) => {
-		anecdotes.filter((anecdote) =>
+		return anecdotes.filter((anecdote) =>
 			anecdote.content.toLowerCase().includes(filter.toLowerCase())
 		);
 	});
@@ -14,6 +14,8 @@ function AnecdoteList() {
 		console.log("vote", id);
 		dispatch(incrementVote(id));
 	};
+
+	// console.log("anecdotes", anecdotes);
 
 	return (
 		<>
