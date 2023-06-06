@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { incrementVote } from "../reducers/anecdoteReducer";
+import { voteAnecdote } from "../reducers/anecdoteReducer";
 import {
 	setNotification,
 	removeNotification,
@@ -14,9 +14,10 @@ function AnecdoteList() {
 		);
 	});
 
-	const vote = (id) => {
-		console.log("vote", id);
-		dispatch(incrementVote(id));
+	const vote = (anecdote) => {
+		console.log("vote", anecdote);
+		dispatch(voteAnecdote(anecdote));
+		const id = anecdote.id;
 		const votedAnecdote = anecdotes.find((anecdote) => anecdote.id === id);
 		notification(`You voted for: '${votedAnecdote.content}'`);
 	};
@@ -37,7 +38,7 @@ function AnecdoteList() {
 					<div>{anecdote.content}</div>
 					<div>
 						has {anecdote.votes}
-						<button onClick={() => vote(anecdote.id)}>vote</button>
+						<button onClick={() => vote(anecdote)}>vote</button>
 					</div>
 				</div>
 			))}
