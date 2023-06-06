@@ -45,18 +45,20 @@ const reducer = (state = initialState, action) => {
 				...anecdoteToVote,
 				votes: anecdoteToVote.votes + 1,
 			};
-			return state.map((anecdote) =>
-				anecdote.id !== id ? anecdote : votedAnecdote
-			);
+			return state
+				.map((anecdote) =>
+					anecdote.id !== id ? anecdote : votedAnecdote
+				)
+				.sort((a, b) => b.votes - a.votes);
 		case "ADD_ANECDOTE":
 			const newAnecdote = {
 				content: action.data.content,
 				id: getId(),
 				votes: 0,
 			};
-			return [...state, newAnecdote];
+			return [...state, newAnecdote].sort((a, b) => b.votes - a.votes);
 		default:
-			return state;
+			return state.sort((a, b) => b.votes - a.votes);
 	}
 };
 
