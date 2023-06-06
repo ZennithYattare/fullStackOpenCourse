@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useSelector, useDispatch } from "react-redux";
-import { incrementVote } from "./reducers/anecdoteReducer";
+import { incrementVote, addAnecdote } from "./reducers/anecdoteReducer";
 
 const App = () => {
 	const anecdotes = useSelector((state) => state);
@@ -9,6 +9,14 @@ const App = () => {
 	const vote = (id) => {
 		console.log("vote", id);
 		dispatch(incrementVote(id));
+	};
+
+	const addAnecdoteSubmit = (event) => {
+		event.preventDefault();
+		const content = event.target.anecdote.value;
+		event.target.anecdote.value = "";
+		console.log("addAnecdote", content);
+		dispatch(addAnecdote(content));
 	};
 
 	return (
@@ -24,11 +32,11 @@ const App = () => {
 				</div>
 			))}
 			<h2>create new</h2>
-			<form>
+			<form onSubmit={addAnecdoteSubmit}>
 				<div>
-					<input />
+					<input name="anecdote" />
 				</div>
-				<button>create</button>
+				<button type="submit">create</button>
 			</form>
 		</div>
 	);
