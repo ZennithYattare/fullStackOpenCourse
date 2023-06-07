@@ -12,6 +12,27 @@ const AnecdoteForm = () => {
 				...old,
 				newAnecdote,
 			]);
+			console.log(newAnecdote);
+			dispatch({
+				type: "SHOW_NOTIFICATION",
+				message: `Created new anecdote: ${newAnecdote.content}`,
+			});
+		},
+		onError: (error) => {
+			if (
+				error.message === "content must be at least 5 characters long"
+			) {
+				dispatch({
+					type: "SHOW_NOTIFICATION",
+					message:
+						"Anecdote content must be at least 5 characters long.",
+				});
+			} else {
+				dispatch({
+					type: "SHOW_NOTIFICATION",
+					message: "An error occurred while creating the anecdote.",
+				});
+			}
 		},
 	});
 
@@ -21,10 +42,6 @@ const AnecdoteForm = () => {
 		event.target.anecdote.value = "";
 		console.log("new anecdote: ", content);
 		newAnecdoteMutation.mutate({ content, votes: 0 });
-		dispatch({
-			type: "SHOW_NOTIFICATION",
-			message: `Created new anecdote: ${content}`,
-		});
 	};
 
 	return (
