@@ -92,9 +92,10 @@ const Footer = () => (
 );
 
 const CreateNew = (props) => {
-	const content = useField("text");
-	const author = useField("text");
-	const info = useField("text");
+	// https://stackoverflow.com/questions/73930529/invalid-value-for-prop-reset-on-input-tag
+	const { reset: resetContent, ...content } = useField("text");
+	const { reset: resetAuthor, ...author } = useField("text");
+	const { reset: resetInfo, ...info } = useField("text");
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -107,9 +108,9 @@ const CreateNew = (props) => {
 	};
 
 	const handleReset = () => {
-		content.reset();
-		author.reset();
-		info.reset();
+		resetContent();
+		resetAuthor();
+		resetInfo();
 	};
 
 	return (
