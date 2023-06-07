@@ -30,8 +30,6 @@ const App = () => {
 		);
 	}
 
-	console.log("anecdotes:", anecdotes);
-
 	return (
 		<div>
 			<h3>Anecdote app</h3>
