@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { useDispatchNotification } from "./contexts/NotificationContext";
+import { useQuery } from "@tanstack/react-query";
 import Blog from "./components/Blog";
-import blogService from "./services/blogs";
+import { getAll, setToken } from "./services/blogs";
 import loginService from "./services/login";
 import Togglable from "./components/Togglable";
 import Notification from "./components/Notification";
@@ -11,10 +12,10 @@ import LoginForm from "./components/Login";
 import BlogForm from "./components/BlogForm";
 
 const App = () => {
-	const [blogs, setBlogs] = useState([]);
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [user, setUser] = useState(null);
+
 	const dispatchNotification = useDispatchNotification();
 
 	useEffect(() => {
@@ -22,16 +23,41 @@ const App = () => {
 		if (loggedUserJSON) {
 			const user = JSON.parse(loggedUserJSON);
 			setUser(user);
-			blogService.setToken(user.token);
+			setToken(user.token);
 		}
 	}, []);
 
-	useEffect(() => {
-		blogService.getAll().then((blogs) => {
-			const sortedBlogs = blogs.sort((a, b) => b.likes - a.likes);
-			setBlogs(sortedBlogs);
-		});
-	}, []);
+	// useEffect(() => {
+	// 	blogService.getAll().then((blogs) => {
+	// 		const sortedBlogs = blogs.sort((a, b) => b.likes - a.likes);
+	// 		setBlogs(sortedBlogs);
+	// 	});
+	// }, []);
+
+	const {
+		data: blogs,
+		isLoading,
+		isError,
+		error,
+	} = useQuery({
+		queryKey: ["blogs"],
+		queryFn: getAll,
+		retry: 5,
+		retryDelay: 1000,
+	});
+
+	if (isLoading) {
+		return <div>Loading...</div>;
+	}
+
+	if (isError) {
+		return (
+			<p>
+				Blog service is not available due to problems with the server.{" "}
+				<p>Error: {error.message}</p>
+			</p>
+		);
+	}
 
 	const handleLogin = async (event) => {
 		event.preventDefault();
@@ -43,7 +69,7 @@ const App = () => {
 			});
 
 			window.localStorage.setItem("loggedInUser", JSON.stringify(user));
-			blogService.setToken(user.token);
+			setToken(user.token);
 			setUser(user);
 			setUsername("");
 			setPassword("");
@@ -71,75 +97,56 @@ const App = () => {
 		setUser(null);
 	};
 
-	const handleBlogSubmit = async (newBlog) => {
-		try {
-			const createdBlog = await blogService.create(newBlog);
-			setBlogs((prevBlogs) => [...prevBlogs, createdBlog]);
-			dispatchNotification({
-				type: "SHOW_NOTIFICATION",
-				message: `Blog "${newBlog.title}" created successfully!`,
-				alert: "success",
-			});
-		} catch (exception) {
-			console.error(exception);
-			dispatchNotification({
-				type: "SHOW_NOTIFICATION",
-				message: "Error creating blog",
-				alert: "error",
-			});
-		}
-	};
+	// const handleLike = async (blog) => {
+	// 	const updatedBlog = {
+	// 		...blog,
+	// 		likes: blog.likes + 1,
+	// 	};
 
-	const handleLike = async (blog) => {
-		const updatedBlog = {
-			...blog,
-			likes: blog.likes + 1,
-		};
+	// 	try {
+	// 		const returnedBlog = await blogService.update(blog.id, updatedBlog);
+	// 		setBlogs((prevBlogs) =>
+	// 			prevBlogs.map((b) =>
+	// 				b.id === returnedBlog.id ? returnedBlog : b
+	// 			)
+	// 		);
+	// 		dispatchNotification({
+	// 			type: "SHOW_NOTIFICATION",
+	// 			message: `Blog "${blog.title}" liked successfully!`,
+	// 			alert: "success",
+	// 		});
+	// 	} catch (exception) {
+	// 		console.error(exception);
+	// 		dispatchNotification({
+	// 			type: "SHOW_NOTIFICATION",
+	// 			message: "Error updating blog",
+	// 			alert: "error",
+	// 		});
+	// 	}
+	// };
 
-		try {
-			const returnedBlog = await blogService.update(blog.id, updatedBlog);
-			setBlogs((prevBlogs) =>
-				prevBlogs.map((b) =>
-					b.id === returnedBlog.id ? returnedBlog : b
-				)
-			);
-			dispatchNotification({
-				type: "SHOW_NOTIFICATION",
-				message: `Blog "${blog.title}" liked successfully!`,
-				alert: "success",
-			});
-		} catch (exception) {
-			console.error(exception);
-			dispatchNotification({
-				type: "SHOW_NOTIFICATION",
-				message: "Error updating blog",
-				alert: "error",
-			});
-		}
-	};
-
-	const handleBlogDelete = async (blog) => {
-		if (window.confirm(`Remove blog "${blog.title}" by ${blog.author} ?`)) {
-			try {
-				await blogService.removeBlog(blog.id);
-				setBlogs((prevBlogs) =>
-					prevBlogs.filter((b) => b.id !== blog.id)
-				);
-				dispatchNotification({
-					type: "SHOW_NOTIFICATION",
-					message: `Blog "${blog.title}" deleted successfully!`,
-					alert: "success",
-				});
-			} catch (exception) {
-				console.error(exception);
-				dispatchNotification({
-					type: "SHOW_NOTIFICATION",
-					message: "Error deleting blog",
-					alert: "error",
-				});
-			}
-		}
-	};
+	// const handleBlogDelete = async (blog) => {
+	// 	if (window.confirm(`Remove blog "${blog.title}" by ${blog.author} ?`)) {
+	// 		try {
+	// 			await blogService.removeBlog(blog.id);
+	// 			setBlogs((prevBlogs) =>
+	// 				prevBlogs.filter((b) => b.id !== blog.id)
+	// 			);
+	// 			dispatchNotification({
+	// 				type: "SHOW_NOTIFICATION",
+	// 				message: `Blog "${blog.title}" deleted successfully!`,
+	// 				alert: "success",
+	// 			});
+	// 		} catch (exception) {
+	// 			console.error(exception);
+	// 			dispatchNotification({
+	// 				type: "SHOW_NOTIFICATION",
+	// 				message: "Error deleting blog",
+	// 				alert: "error",
+	// 			});
+	// 		}
+	// 	}
+	// };
 
 	return (
 		<div>
@@ -172,7 +179,7 @@ const App = () => {
 					)}
 					{
 						<Togglable buttonLabel="Create new blog">
-							<BlogForm handleBlogSubmit={handleBlogSubmit} />
+							<BlogForm />
 						</Togglable>
 					}
 					{blogs.map((blog) => (
@@ -180,8 +187,8 @@ const App = () => {
 							key={blog.id}
 							blog={blog}
 							user={user}
-							handleLike={() => handleLike(blog)}
-							handleBlogDelete={handleBlogDelete}
+							// handleLike={() => handleLike(blog)}
+							// handleBlogDelete={handleBlogDelete}
 						/>
 					))}
 				</>

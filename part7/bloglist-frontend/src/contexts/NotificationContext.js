@@ -43,13 +43,13 @@ export const NotificationProvider = ({ children }) => {
 // This way I can reuse the useDispatchNotification hook in other components such as for voting and creating blogs.
 export const useNotification = () => {
 	const dispatch = useContext(NotificationContext);
-	console.log("dispatch[0]: ", dispatch);
+	// console.log("dispatch[0]: ", dispatch);
 	return dispatch[0];
 };
 
 export const useDispatchNotification = () => {
 	const dispatch = useContext(NotificationContext);
-	console.log("dispatch[1]: ", dispatch);
+	// console.log("dispatch[1]: ", dispatch);
 	return dispatch[1];
 };
 

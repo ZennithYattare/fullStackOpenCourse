@@ -1,12 +1,36 @@
-/** @format */
-/* eslint-disable */
-
 import { useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { create } from "../services/blogs";
+import { useDispatchNotification } from "../contexts/NotificationContext";
 
-const BlogForm = ({ handleBlogSubmit }) => {
+const BlogForm = () => {
 	const [title, setTitle] = useState("");
 	const [author, setAuthor] = useState("");
 	const [url, setUrl] = useState("");
+
+	const queryClient = useQueryClient();
+	const dispatchNotification = useDispatchNotification();
+
+	const createBlogMutation = useMutation({
+		mutationFn: create,
+		onSuccess: (newBlog) => {
+			queryClient.setQueryData(["blogs", newBlog.id], newBlog);
+			queryClient.invalidateQueries("blogs");
+			dispatchNotification({
+				type: "SHOW_NOTIFICATION",
+				message: `Blog "${newBlog.title}" created successfully!`,
+				alert: "success",
+			});
+		},
+		onError: (error) => {
+			console.error(error);
+			dispatchNotification({
+				type: "SHOW_NOTIFICATION",
+				message: "Error creating blog",
+				alert: "error",
+			});
+		},
+	});
 
 	const handleTitleChange = (event) => {
 		setTitle(event.target.value);
@@ -27,6 +51,10 @@ const BlogForm = ({ handleBlogSubmit }) => {
 		setTitle("");
 		setAuthor("");
 		setUrl("");
+	};
+
+	const handleBlogSubmit = async (newBlog) => {
+		createBlogMutation.mutate(newBlog);
 	};
 
 	return (
@@ -61,7 +89,9 @@ const BlogForm = ({ handleBlogSubmit }) => {
 					id="blogFormUrl"
 				/>
 			</div>
-			<button id="blogFormSubmitButton" type="submit">Create</button>
+			<button id="blogFormSubmitButton" type="submit">
+				Create
+			</button>
 		</form>
 	);
 };
