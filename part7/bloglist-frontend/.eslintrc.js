@@ -1,4 +1,4 @@
-/** @format */
+// I already have Prettier running in VS Code, so I don't need to run it from the command line.
 
 module.exports = {
 	env: {
@@ -20,7 +20,7 @@ module.exports = {
 	},
 	plugins: ["react", "jest", "cypress"],
 	rules: {
-		indent: ["error", "tab"],
+		indent: "off",
 		"linebreak-style": 0,
 		quotes: ["error", "double"],
 		semi: ["error", "always"],
