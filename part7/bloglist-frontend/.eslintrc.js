@@ -18,7 +18,7 @@ module.exports = {
 			jsx: true,
 		},
 	},
-	plugins: ["react", "jest", "cypress"],
+	plugins: ["react", "jest", "cypress", "react-hooks"],
 	rules: {
 		indent: "off",
 		"linebreak-style": 0,
@@ -31,6 +31,7 @@ module.exports = {
 		"no-console": 0,
 		"react/prop-types": 0,
 		"react/react-in-jsx-scope": "off",
+		"react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
 	},
 	settings: {
 		react: {
