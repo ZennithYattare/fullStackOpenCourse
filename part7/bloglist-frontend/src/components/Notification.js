@@ -1,12 +1,15 @@
 /** @format */
+import { useNotification } from "../contexts/NotificationContext";
 
-const Notification = ({ message }) => {
+const Notification = () => {
 	// console.log("Notification.jsx: message:", message);
+	const { message, alert } = useNotification();
+
 	if (message === null) {
 		return null;
 	}
 
-	return <div className={message.type}>{message.message}</div>;
+	return <div className={alert}>{message}</div>;
 };
 
 export default Notification;

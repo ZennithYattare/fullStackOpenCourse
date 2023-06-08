@@ -1,6 +1,7 @@
 /** @format */
 
 import { useState, useEffect } from "react";
+import { useDispatchNotification } from "./contexts/NotificationContext";
 import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
@@ -14,7 +15,7 @@ const App = () => {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [user, setUser] = useState(null);
-	const [message, setMessage] = useState(null);
+	const dispatchNotification = useDispatchNotification();
 
 	useEffect(() => {
 		const loggedUserJSON = window.localStorage.getItem("loggedInUser");
@@ -46,24 +47,27 @@ const App = () => {
 			setUser(user);
 			setUsername("");
 			setPassword("");
-			setMessage({ message: "Logged in successfully!", type: "success" });
-			setTimeout(() => {
-				setMessage(null);
-			}, 5000);
+			dispatchNotification({
+				type: "SHOW_NOTIFICATION",
+				message: `Logged in successfully as ${user.name}`,
+				alert: "success",
+			});
 		} catch (exception) {
-			setMessage({ message: "Wrong credentials", type: "error" });
-			setTimeout(() => {
-				setMessage(null);
-			}, 5000);
+			dispatchNotification({
+				type: "SHOW_NOTIFICATION",
+				message: "Wrong credentials",
+				alert: "error",
+			});
 		}
 	};
 
 	const handleLogout = () => {
 		window.localStorage.removeItem("loggedInUser");
-		setMessage({ message: "Logged out successfully!", type: "success" });
-		setTimeout(() => {
-			setMessage(null);
-		}, 5000);
+		dispatchNotification({
+			type: "SHOW_NOTIFICATION",
+			message: "Logged out successfully!",
+			alert: "success",
+		});
 		setUser(null);
 	};
 
@@ -71,19 +75,18 @@ const App = () => {
 		try {
 			const createdBlog = await blogService.create(newBlog);
 			setBlogs((prevBlogs) => [...prevBlogs, createdBlog]);
-			setMessage({
+			dispatchNotification({
+				type: "SHOW_NOTIFICATION",
 				message: `Blog "${newBlog.title}" created successfully!`,
-				type: "success",
+				alert: "success",
 			});
-			setTimeout(() => {
-				setMessage(null);
-			}, 5000);
 		} catch (exception) {
 			console.error(exception);
-			setMessage({ message: "Error creating blog", type: "error" });
-			setTimeout(() => {
-				setMessage(null);
-			}, 5000);
+			dispatchNotification({
+				type: "SHOW_NOTIFICATION",
+				message: "Error creating blog",
+				alert: "error",
+			});
 		}
 	};
 
@@ -100,19 +103,18 @@ const App = () => {
 					b.id === returnedBlog.id ? returnedBlog : b
 				)
 			);
-			setMessage({
+			dispatchNotification({
+				type: "SHOW_NOTIFICATION",
 				message: `Blog "${blog.title}" liked successfully!`,
-				type: "success",
+				alert: "success",
 			});
-			setTimeout(() => {
-				setMessage(null);
-			}, 5000);
 		} catch (exception) {
 			console.error(exception);
-			setMessage({ message: "Error updating blog", type: "error" });
-			setTimeout(() => {
-				setMessage(null);
-			}, 5000);
+			dispatchNotification({
+				type: "SHOW_NOTIFICATION",
+				message: "Error updating blog",
+				alert: "error",
+			});
 		}
 	};
 
@@ -123,26 +125,25 @@ const App = () => {
 				setBlogs((prevBlogs) =>
 					prevBlogs.filter((b) => b.id !== blog.id)
 				);
-				setMessage({
+				dispatchNotification({
+					type: "SHOW_NOTIFICATION",
 					message: `Blog "${blog.title}" deleted successfully!`,
-					type: "success",
+					alert: "success",
 				});
-				setTimeout(() => {
-					setMessage(null);
-				}, 5000);
 			} catch (exception) {
 				console.error(exception);
-				setMessage({ message: "Error deleting blog", type: "error" });
-				setTimeout(() => {
-					setMessage(null);
-				}, 5000);
+				dispatchNotification({
+					type: "SHOW_NOTIFICATION",
+					message: "Error deleting blog",
+					alert: "error",
+				});
 			}
 		}
 	};
 
 	return (
 		<div>
-			{message && <Notification message={message} />}
+			<Notification />
 			{user === null ? (
 				<>
 					<h2>Login to application</h2>
