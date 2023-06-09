@@ -1,31 +1,26 @@
 /** @format */
 
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatchNotification } from "./contexts/NotificationContext";
 import { useQuery } from "@tanstack/react-query";
 import Blog from "./components/Blog";
 import { getAll, setToken } from "./services/blogs";
-import loginService from "./services/login";
 import Togglable from "./components/Togglable";
 import Notification from "./components/Notification";
 import LoginForm from "./components/Login";
 import BlogForm from "./components/BlogForm";
+import { useUser, useDispatchUser } from "./contexts/UserContext";
 
 const App = () => {
-	const [username, setUsername] = useState("");
-	const [password, setPassword] = useState("");
-	const [user, setUser] = useState(null);
-
 	const dispatchNotification = useDispatchNotification();
+	const dispatchUser = useDispatchUser();
+	const { user } = useUser();
 
-	/*
-		TODO: 7.13 - Refactor to use useReducer-hook and context to manage the data for the logged in user.
-	*/
 	useEffect(() => {
 		const loggedUserJSON = window.localStorage.getItem("loggedInUser");
 		if (loggedUserJSON) {
 			const user = JSON.parse(loggedUserJSON);
-			setUser(user);
+			dispatchUser({ type: "LOGIN", user: user, token: user.token });
 			setToken(user.token);
 		}
 	}, []);
@@ -58,45 +53,14 @@ const App = () => {
 		);
 	}
 
-	/*
-		TODO: 7.13 - Refactor to use useReducer-hook and context to manage the data for the logged in user.
-	*/
-	const handleLogin = async (event) => {
-		event.preventDefault();
-
-		try {
-			const user = await loginService.login({
-				username,
-				password,
-			});
-
-			window.localStorage.setItem("loggedInUser", JSON.stringify(user));
-			setToken(user.token);
-			setUser(user);
-			setUsername("");
-			setPassword("");
-			dispatchNotification({
-				type: "SHOW_NOTIFICATION",
-				message: `Logged in successfully as ${user.name}`,
-				alert: "success",
-			});
-		} catch (exception) {
-			dispatchNotification({
-				type: "SHOW_NOTIFICATION",
-				message: "Wrong credentials",
-				alert: "error",
-			});
-		}
-	};
-
 	const handleLogout = () => {
 		window.localStorage.removeItem("loggedInUser");
+		dispatchUser({ type: "LOGOUT" });
 		dispatchNotification({
 			type: "SHOW_NOTIFICATION",
 			message: "Logged out successfully!",
 			alert: "success",
 		});
-		setUser(null);
 	};
 
 	return (
@@ -105,17 +69,7 @@ const App = () => {
 			{user === null ? (
 				<>
 					<h2>Login to application</h2>
-					<LoginForm
-						handleLogin={handleLogin}
-						handleUsernameChange={({ target }) =>
-							setUsername(target.value)
-						}
-						handlePasswordChange={({ target }) =>
-							setPassword(target.value)
-						}
-						username={username}
-						password={password}
-					/>
+					<LoginForm />
 				</>
 			) : (
 				<>
@@ -134,11 +88,7 @@ const App = () => {
 						</Togglable>
 					}
 					{blogs.map((blog) => (
-						<Blog
-							key={blog.id}
-							blog={blog}
-							user={user}
-						/>
+						<Blog key={blog.id} blog={blog} user={user} />
 					))}
 				</>
 			)}

@@ -58,7 +58,7 @@ const Blog = ({ blog, user }) => {
 			queryClient.removeQueries(["blogs", data.id]);
 			dispatchNotification({
 				type: "SHOW_NOTIFICATION",
-				message: `Blog "${data.title}" deleted successfully!`,
+				message: "Blog deleted successfully!",
 				alert: "success",
 			});
 		},
