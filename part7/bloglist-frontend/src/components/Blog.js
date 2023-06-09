@@ -1,8 +1,11 @@
 /** @format */
 
 import React, { useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useDispatchNotification } from "../contexts/NotificationContext";
+import { update, removeBlog } from "../services/blogs";
 
-const Blog = ({ blog, user, handleLike, handleBlogDelete }) => {
+const Blog = ({ blog, user }) => {
 	const blogStyle = {
 		paddingTop: 10,
 		paddingLeft: 2,
@@ -17,7 +20,65 @@ const Blog = ({ blog, user, handleLike, handleBlogDelete }) => {
 		setShowDetails(!showDetails);
 	};
 
-	const handleDelete = () => {
+	const queryClient = useQueryClient();
+	const dispatchNotification = useDispatchNotification();
+
+	//  * DONE: 7.12 - Expand your solution so that it is again possible to like and delete a blog.
+	const updateBlogMutation = useMutation({
+		mutationFn: update,
+		onSuccess: (data) => {
+			queryClient.setQueryData(["blogs", data.id], data);
+			queryClient.invalidateQueries("blogs");
+			dispatchNotification({
+				type: "SHOW_NOTIFICATION",
+				message: `Blog "${data.title}" updated successfully!`,
+				alert: "success",
+			});
+		},
+		onError: (error) => {
+			console.error(error);
+			dispatchNotification({
+				type: "SHOW_NOTIFICATION",
+				message: "Error updating blog",
+				alert: "error",
+			});
+		},
+	});
+
+	const handleLike = async (blog) => {
+		updateBlogMutation.mutate({
+			...blog,
+			likes: blog.likes + 1,
+		});
+	};
+
+	const deleteBlogMutation = useMutation({
+		mutationFn: removeBlog,
+		onSuccess: (data) => {
+			queryClient.removeQueries(["blogs", data.id]);
+			dispatchNotification({
+				type: "SHOW_NOTIFICATION",
+				message: `Blog "${data.title}" deleted successfully!`,
+				alert: "success",
+			});
+		},
+		onError: (error) => {
+			console.error(error);
+			dispatchNotification({
+				type: "SHOW_NOTIFICATION",
+				message: "Error deleting blog",
+				alert: "error",
+			});
+		},
+	});
+
+	const handleBlogDelete = async (blog) => {
+		if (window.confirm(`Remove blog "${blog.title}" by ${blog.author} ?`)) {
+			deleteBlogMutation.mutate(blog);
+		}
+	};
+
+	const deleteBlogButton = () => {
 		if (user && user.username === blog.user.username) {
 			return (
 				<button
@@ -45,12 +106,15 @@ const Blog = ({ blog, user, handleLike, handleBlogDelete }) => {
 					<a href={blog.url}>{blog.url}</a>
 					<p>
 						Likes: {blog.likes}{" "}
-						<button data-testid="likeButton" onClick={handleLike}>
+						<button
+							data-testid="likeButton"
+							onClick={() => handleLike(blog)}
+						>
 							Like
 						</button>
 					</p>
 					<p>{blog.user.name}</p>
-					{handleDelete()}
+					{deleteBlogButton()}
 				</div>
 			)}
 		</div>

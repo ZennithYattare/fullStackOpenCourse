@@ -20,12 +20,14 @@ export const create = async (newObject) => {
 	return response.data;
 };
 
-export const update = (id, newObject) => {
+export const update = (newObject) => {
+	const id = newObject.id;
 	const request = axios.put(`${baseUrl}/${id}`, newObject);
 	return request.then((response) => response.data);
 };
 
-export const removeBlog = (id) => {
+export const removeBlog = (newObject) => {
+	const id = newObject.id;
 	const config = { headers: { Authorization: token } };
 	const request = axios.delete(`${baseUrl}/${id}`, config);
 

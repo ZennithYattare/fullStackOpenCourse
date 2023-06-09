@@ -18,6 +18,9 @@ const App = () => {
 
 	const dispatchNotification = useDispatchNotification();
 
+	/*
+		TODO: 7.13 - Refactor to use useReducer-hook and context to manage the data for the logged in user.
+	*/
 	useEffect(() => {
 		const loggedUserJSON = window.localStorage.getItem("loggedInUser");
 		if (loggedUserJSON) {
@@ -26,13 +29,6 @@ const App = () => {
 			setToken(user.token);
 		}
 	}, []);
-
-	// useEffect(() => {
-	// 	blogService.getAll().then((blogs) => {
-	// 		const sortedBlogs = blogs.sort((a, b) => b.likes - a.likes);
-	// 		setBlogs(sortedBlogs);
-	// 	});
-	// }, []);
 
 	const {
 		data: blogs,
@@ -44,6 +40,9 @@ const App = () => {
 		queryFn: getAll,
 		retry: 5,
 		retryDelay: 1000,
+		select: (data) => {
+			return data.sort((a, b) => b.likes - a.likes);
+		},
 	});
 
 	if (isLoading) {
@@ -59,6 +58,9 @@ const App = () => {
 		);
 	}
 
+	/*
+		TODO: 7.13 - Refactor to use useReducer-hook and context to manage the data for the logged in user.
+	*/
 	const handleLogin = async (event) => {
 		event.preventDefault();
 
@@ -96,57 +98,6 @@ const App = () => {
 		});
 		setUser(null);
 	};
-
-	// const handleLike = async (blog) => {
-	// 	const updatedBlog = {
-	// 		...blog,
-	// 		likes: blog.likes + 1,
-	// 	};
-
-	// 	try {
-	// 		const returnedBlog = await blogService.update(blog.id, updatedBlog);
-	// 		setBlogs((prevBlogs) =>
-	// 			prevBlogs.map((b) =>
-	// 				b.id === returnedBlog.id ? returnedBlog : b
-	// 			)
-	// 		);
-	// 		dispatchNotification({
-	// 			type: "SHOW_NOTIFICATION",
-	// 			message: `Blog "${blog.title}" liked successfully!`,
-	// 			alert: "success",
-	// 		});
-	// 	} catch (exception) {
-	// 		console.error(exception);
-	// 		dispatchNotification({
-	// 			type: "SHOW_NOTIFICATION",
-	// 			message: "Error updating blog",
-	// 			alert: "error",
-	// 		});
-	// 	}
-	// };
-
-	// const handleBlogDelete = async (blog) => {
-	// 	if (window.confirm(`Remove blog "${blog.title}" by ${blog.author} ?`)) {
-	// 		try {
-	// 			await blogService.removeBlog(blog.id);
-	// 			setBlogs((prevBlogs) =>
-	// 				prevBlogs.filter((b) => b.id !== blog.id)
-	// 			);
-	// 			dispatchNotification({
-	// 				type: "SHOW_NOTIFICATION",
-	// 				message: `Blog "${blog.title}" deleted successfully!`,
-	// 				alert: "success",
-	// 			});
-	// 		} catch (exception) {
-	// 			console.error(exception);
-	// 			dispatchNotification({
-	// 				type: "SHOW_NOTIFICATION",
-	// 				message: "Error deleting blog",
-	// 				alert: "error",
-	// 			});
-	// 		}
-	// 	}
-	// };
 
 	return (
 		<div>
@@ -187,8 +138,6 @@ const App = () => {
 							key={blog.id}
 							blog={blog}
 							user={user}
-							// handleLike={() => handleLike(blog)}
-							// handleBlogDelete={handleBlogDelete}
 						/>
 					))}
 				</>
