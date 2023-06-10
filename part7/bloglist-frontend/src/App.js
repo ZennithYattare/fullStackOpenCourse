@@ -2,14 +2,16 @@
 
 import { useEffect } from "react";
 import { useDispatchNotification } from "./contexts/NotificationContext";
-import { useQuery } from "@tanstack/react-query";
-import Blog from "./components/Blog";
-import { getAll, setToken } from "./services/blogs";
+import { useUser, useDispatchUser } from "./contexts/UserContext";
+import { setToken } from "./services/blogs";
+
+import BlogsList from "./components/BlogsList";
 import Togglable from "./components/Togglable";
 import Notification from "./components/Notification";
 import LoginForm from "./components/Login";
 import BlogForm from "./components/BlogForm";
-import { useUser, useDispatchUser } from "./contexts/UserContext";
+import Users from "./components/Users";
+import { Routes, Route } from "react-router-dom";
 
 const App = () => {
 	const dispatchNotification = useDispatchNotification();
@@ -24,34 +26,6 @@ const App = () => {
 			setToken(user.token);
 		}
 	}, []);
-
-	const {
-		data: blogs,
-		isLoading,
-		isError,
-		error,
-	} = useQuery({
-		queryKey: ["blogs"],
-		queryFn: getAll,
-		retry: 5,
-		retryDelay: 1000,
-		select: (data) => {
-			return data.sort((a, b) => b.likes - a.likes);
-		},
-	});
-
-	if (isLoading) {
-		return <div>Loading...</div>;
-	}
-
-	if (isError) {
-		return (
-			<p>
-				Blog service is not available due to problems with the server.{" "}
-				<p>Error: {error.message}</p>
-			</p>
-		);
-	}
 
 	const handleLogout = () => {
 		window.localStorage.removeItem("loggedInUser");
@@ -87,9 +61,10 @@ const App = () => {
 							<BlogForm />
 						</Togglable>
 					}
-					{blogs.map((blog) => (
-						<Blog key={blog.id} blog={blog} user={user} />
-					))}
+					<Routes>
+						<Route path="/" element={<BlogsList />} />
+						<Route path="/users" element={<Users />} />
+					</Routes>
 				</>
 			)}
 		</div>
