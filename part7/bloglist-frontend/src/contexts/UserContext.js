@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useReducer } from "react";
 
-
 const UserContext = createContext();
 
 const userReducer = (state, action) => {
@@ -25,9 +24,6 @@ export const UserProvider = ({ children }) => {
 		user: null,
 		token: null,
 	});
-
-	console.log("state", state.user);
-	console.log("token", state.token);
 
 	return (
 		<UserContext.Provider value={[state, dispatch]}>
