@@ -5,8 +5,25 @@ const usersRouter = require("express").Router();
 const User = require("../models/user");
 
 usersRouter.get("/", async (request, response) => {
-	const users = await User.find({}).populate("blogs", { user: 0 });
+	const users = await User.find({}).populate("blogs", {
+		user: 0,
+	});
 	response.json(users);
+});
+
+usersRouter.get("/:id", async (request, response) => {
+	console.log("request.params.id: ", request.params.id);
+	const user = await User.findById(request.params.id).populate("blogs", {
+		user: 0,
+	});
+
+	console.log(user);
+
+	if (user) {
+		response.json(user);
+	} else {
+		response.status(404).end();
+	}
 });
 
 usersRouter.post("/", async (request, response) => {

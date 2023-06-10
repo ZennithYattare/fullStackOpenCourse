@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useDispatchNotification } from "./contexts/NotificationContext";
 import { useUser, useDispatchUser } from "./contexts/UserContext";
 import { setToken } from "./services/blogs";
+import { Routes, Route } from "react-router-dom";
 
 import BlogsList from "./components/BlogsList";
 import Togglable from "./components/Togglable";
@@ -11,7 +12,7 @@ import Notification from "./components/Notification";
 import LoginForm from "./components/Login";
 import BlogForm from "./components/BlogForm";
 import Users from "./components/Users";
-import { Routes, Route } from "react-router-dom";
+import UserBlogs from "./components/UserBlogs";
 
 const App = () => {
 	const dispatchNotification = useDispatchNotification();
@@ -64,6 +65,7 @@ const App = () => {
 					<Routes>
 						<Route path="/" element={<BlogsList />} />
 						<Route path="/users" element={<Users />} />
+						<Route path="/users/:id" element={<UserBlogs />} />
 					</Routes>
 				</>
 			)}
