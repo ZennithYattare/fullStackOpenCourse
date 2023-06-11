@@ -61,11 +61,14 @@ const Authors = () => {
 				<form onSubmit={handleSubmit}>
 					<div>
 						<label>Name</label>
-						<input
-							type="text"
-							value={name}
-							onChange={handleNameChange}
-						/>
+						<select value={name} onChange={handleNameChange}>
+							<option value="">Select an author</option>
+							{authors.map((author) => (
+								<option key={author.name} value={author.name}>
+									{author.name}
+								</option>
+							))}
+						</select>
 					</div>
 					<div>
 						<label>Born</label>
