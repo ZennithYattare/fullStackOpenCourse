@@ -4,12 +4,22 @@ import NewBook from "./components/NewBook";
 import { Routes, Route, Link } from "react-router-dom";
 
 const App = () => {
+	const padding = {
+		padding: 5,
+	};
+
 	return (
 		<div>
 			<div>
-				<Link to="/">authors</Link>
-				<Link to="/books">books</Link>
-				<Link to="/add">add book</Link>
+				<Link style={padding} to="/">
+					authors
+				</Link>
+				<Link style={padding} to="/books">
+					books
+				</Link>
+				<Link style={padding} to="/add">
+					add book
+				</Link>
 			</div>
 
 			<Routes>
