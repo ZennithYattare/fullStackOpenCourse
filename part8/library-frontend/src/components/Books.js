@@ -1,4 +1,4 @@
-const Books = (props) => {
+const Books = () => {
 	const books = [];
 
 	return (

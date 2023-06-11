@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const NewBook = (props) => {
+const NewBook = () => {
 	const [title, setTitle] = useState("");
 	const [author, setAuthor] = useState("");
 	const [published, setPublished] = useState("");
