@@ -6,11 +6,12 @@ import { useUser, useDispatchUser } from "./contexts/UserContext";
 import { setToken } from "./services/blogs";
 import { Routes, Route } from "react-router-dom";
 
-import BlogsList from "./components/BlogsList";
+import LoginForm from "./components/Login";
 import Togglable from "./components/Togglable";
 import Notification from "./components/Notification";
-import LoginForm from "./components/Login";
+import BlogsList from "./components/BlogsList";
 import BlogForm from "./components/BlogForm";
+import BlogPage from "./components/BlogPage";
 import Users from "./components/Users";
 import UserBlogs from "./components/UserBlogs";
 
@@ -64,6 +65,7 @@ const App = () => {
 					}
 					<Routes>
 						<Route path="/" element={<BlogsList />} />
+						<Route path="/blogs/:id" element={<BlogPage />} />
 						<Route path="/users" element={<Users />} />
 						<Route path="/users/:id" element={<UserBlogs />} />
 					</Routes>

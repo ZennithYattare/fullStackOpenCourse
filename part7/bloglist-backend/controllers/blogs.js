@@ -11,6 +11,13 @@ blogsRouter.get("/", async (request, response) => {
 	response.json(blogs);
 });
 
+blogsRouter.get("/:id", async (request, response) => {
+	const blog = await Blog.findById(request.params.id).populate("user", {
+		blogs: 0,
+	});
+	response.json(blog);
+});
+
 // Added the following middleware to the route handler for the HTTP POST request to the /api/blogs endpoint as using it in the app.js as using the following:
 // app.use(middleware.tokenExtractor)
 // app.use(middleware.verifyToken)
