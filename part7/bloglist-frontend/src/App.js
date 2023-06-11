@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useDispatchNotification } from "./contexts/NotificationContext";
 import { useUser, useDispatchUser } from "./contexts/UserContext";
 import { setToken } from "./services/blogs";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Link } from "react-router-dom";
 
 import LoginForm from "./components/Login";
 import Togglable from "./components/Togglable";
@@ -39,6 +39,16 @@ const App = () => {
 		});
 	};
 
+	const padding = {
+		paddingRight: 5,
+	};
+
+	const background = {
+		backgroundColor: "#f0f0f0",
+		padding: 10,
+		marginBottom: 10,
+	};
+
 	return (
 		<div>
 			<Notification />
@@ -49,15 +59,26 @@ const App = () => {
 				</>
 			) : (
 				<>
+					<div style={background}>
+						<Link to="/" style={padding}>
+							blogs
+						</Link>
+						<Link to="/users" style={padding}>
+							users
+						</Link>
+						{user && (
+							<>
+								<span>{user.name} logged in</span>
+								<button
+									id="logoutButton"
+									onClick={handleLogout}
+								>
+									Logout
+								</button>
+							</>
+						)}
+					</div>
 					<h2>Blogs</h2>
-					{user && (
-						<div>
-							<span>{user.name} logged in</span>
-							<button id="logoutButton" onClick={handleLogout}>
-								Logout
-							</button>
-						</div>
-					)}
 					{
 						<Togglable buttonLabel="Create new blog">
 							<BlogForm />
