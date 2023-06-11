@@ -2,6 +2,25 @@ const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
 const { gql } = require("graphql-tag");
 const { v1: uuid } = require("uuid");
+const mongoose = require("mongoose");
+mongoose.set("strictQuery", false);
+const Book = require("./models/book");
+const Author = require("./models/author");
+
+require("dotenv").config();
+
+const MONGODB_URI = process.env.MONGODB_URI;
+
+console.log("connecting to", MONGODB_URI);
+
+mongoose
+	.connect(MONGODB_URI)
+	.then(() => {
+		console.log("connected to MongoDB");
+	})
+	.catch((error) => {
+		console.log("error connection to MongoDB:", error.message);
+	});
 
 let authors = [
 	{
@@ -108,9 +127,10 @@ const typeDefs = gql`
 
 	type Book {
 		title: String!
-		author: String!
 		published: Int!
+		author: Author!
 		genres: [String!]!
+		id: ID!
 	}
 
 	type Query {
@@ -161,16 +181,44 @@ const resolvers = {
 		},
 	},
 	Mutation: {
-		addBook: (root, args) => {
-			let author = authors.find((author) => author.name === args.author);
+		// addBook: (root, args) => {
+		// 	let author = authors.find((author) => author.name === args.author);
 
+		// 	if (!author) {
+		// 		author = { name: args.author, id: uuid() };
+		// 		authors = authors.concat(author);
+		// 	}
+
+		// 	const book = { ...args, author: author.name };
+		// 	books = books.concat(book);
+		// 	return book;
+		// },
+		addBook: async (root, { title, published, author: name, genres }) => {
+			let author = await Author.findOne({ name });
 			if (!author) {
-				author = { name: args.author, id: uuid() };
-				authors = authors.concat(author);
+				author = new Author({ name });
+				try {
+					await author.save();
+				} catch (error) {
+					console.log(error.message);
+				}
 			}
 
-			const book = { ...args, author: author.name };
-			books = books.concat(book);
+			const book = new Book({
+				title,
+				published,
+				author,
+				genres,
+			});
+
+			try {
+				await book.save();
+				// author.books = author.books.concat(book);
+				await author.save();
+			} catch (error) {
+				console.log(error.message);
+			}
+
 			return book;
 		},
 		editAuthor: (root, args) => {
