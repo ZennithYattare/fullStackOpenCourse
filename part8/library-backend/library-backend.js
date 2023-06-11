@@ -1,7 +1,7 @@
 const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
 const { gql } = require("graphql-tag");
-const { v1: uuid } = require("uuid");
+const { GraphQLError } = require("graphql");
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
 const Book = require("./models/book");
@@ -177,6 +177,13 @@ const resolvers = {
 					await author.save();
 				} catch (error) {
 					console.log(error.message);
+					throw new GraphQLError("Adding book failed", {
+						extensions: {
+							code: "BAD_USER_INPUT",
+							invalidArgs: args,
+							error,
+						},
+					});
 				}
 			}
 
@@ -193,6 +200,13 @@ const resolvers = {
 				await author.save();
 			} catch (error) {
 				console.log(error.message);
+				throw new GraphQLError("Adding book failed", {
+					extensions: {
+						code: "BAD_USER_INPUT",
+						invalidArgs: args,
+						error,
+					},
+				});
 			}
 
 			return book;
