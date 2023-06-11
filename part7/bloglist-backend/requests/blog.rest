@@ -1,13 +1,13 @@
 @baseUrl=http://localhost:3003
 @userId=
-@blogId=6477646d9244aab5fd58ce99
+@blogId=64774124d8804e54e9fe9e7f
 
 # GET request for all blogs in the database
 GET  {{baseUrl}}/api/blogs HTTP/1.1
 
 ###
 # GET request for a single blog in the database
-GET  {{baseUrl}}/api/persons/{{userId}} HTTP/1.1
+GET  {{baseUrl}}/api/blogs/{{blogId}} HTTP/1.1
 
 ###
 # GET request for the info of the database
