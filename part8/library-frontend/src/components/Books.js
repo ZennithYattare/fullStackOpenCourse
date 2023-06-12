@@ -18,13 +18,13 @@ const Books = () => {
 				<tbody>
 					<tr>
 						<th></th>
-						<th>author</th>
-						<th>published</th>
+						<th style={{ textAlign: "left" }}>author</th>
+						<th style={{ textAlign: "left" }}>published</th>
 					</tr>
 					{books.map((a) => (
-						<tr key={a.title}>
+						<tr key={a.id}>
 							<td>{a.title}</td>
-							<td>{a.author}</td>
+							<td>{a.author.name}</td>
 							<td>{a.published}</td>
 						</tr>
 					))}

@@ -48,10 +48,10 @@ const Authors = () => {
 						<th>books</th>
 					</tr>
 					{authors.map((a) => (
-						<tr key={a.name}>
-							<td>{a.name}</td>
-							<td>{a.born}</td>
-							<td>{a.bookCount}</td>
+						<tr key={a.id}>
+							<td>{a.name ? a.name : "N/A"}</td>
+							<td>{a.born ? a.born : "N/A"}</td>
+							<td>{a.bookCount ? a.bookCount : "N/A"}</td>
 						</tr>
 					))}
 				</tbody>

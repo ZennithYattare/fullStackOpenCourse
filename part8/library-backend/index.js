@@ -229,9 +229,12 @@ const resolvers = {
 
 			try {
 				let author = await Author.findOne({ name });
+				console.log(author);
 				try {
 					if (!author) {
 						author = new Author({ name });
+						// Increment the bookCount field of the Author model
+						author.bookCount += 1;
 						await author.save();
 					}
 				} catch (error) {
