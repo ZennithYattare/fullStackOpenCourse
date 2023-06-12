@@ -25,11 +25,12 @@ export const create = async (newObject) => {
 	return response.data;
 };
 
-export const addComment = async (id, comment) => {
+export const addComment = async (newObject) => {
 	const config = { headers: { Authorization: token } };
+	const id = newObject.id;
 	const response = await axios.post(
 		`${baseUrl}/${id}/comments`,
-		comment,
+		newObject,
 		config
 	);
 	return response.data;

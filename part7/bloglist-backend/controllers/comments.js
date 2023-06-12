@@ -11,7 +11,12 @@ commentsRouter.post(
 	middleware.tokenExtractor,
 	middleware.verifyToken,
 	async (request, response) => {
-		const { content } = request.body;
+		const body = request.body;
+
+		if (!body.comment) {
+			return response.status(400).json({ error: "content missing" });
+		}
+
 		const decodedToken = jwt.verify(request.token, process.env.SECRET);
 
 		if (!decodedToken.id) {
@@ -25,7 +30,7 @@ commentsRouter.post(
 		}
 
 		const comment = new Comment({
-			content,
+			content: body.comment,
 			blog: blog._id,
 		});
 
