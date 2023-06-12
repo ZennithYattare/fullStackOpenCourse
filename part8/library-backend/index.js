@@ -133,6 +133,7 @@ const typeDefs = gql`
 	}
 
 	type Author {
+		id: ID!
 		name: String!
 		bookCount: Int!
 		born: Int
@@ -229,7 +230,6 @@ const resolvers = {
 
 			try {
 				let author = await Author.findOne({ name });
-				console.log(author);
 				try {
 					if (!author) {
 						author = new Author({ name });
