@@ -4,6 +4,7 @@ import { getBlog } from "../services/blogs";
 import { useDispatchNotification } from "../contexts/NotificationContext";
 import { update, removeBlog } from "../services/blogs";
 import { useUser } from "../contexts/UserContext";
+import Comments from "./Comments";
 
 const BlogPage = () => {
 	const id = useParams().id;
@@ -28,9 +29,9 @@ const BlogPage = () => {
 	const updateBlogMutation = useMutation({
 		mutationFn: update,
 		onSuccess: (data) => {
-			queryClient.setQueryData(["blogs", data.id], data);
+			queryClient.setQueryData(["blog", data.id], data);
 			// I was thinking of commenting out this line of code as it was doing a GET request after updating the number of likes, but it would be better to keep this line of code as it will update the number of likes in the cache.
-			queryClient.invalidateQueries("blogs");
+			queryClient.invalidateQueries("blog");
 			dispatchNotification({
 				type: "SHOW_NOTIFICATION",
 				message: `Blog "${data.title}" updated successfully!`,
@@ -107,6 +108,9 @@ const BlogPage = () => {
 		);
 	}
 
+	const commentContents = blog.comments.map((comment) => comment);
+	console.log(commentContents); // ["This is a comment", "Another comment"]
+
 	return (
 		<div>
 			<h2>{blog.title}</h2>
@@ -117,6 +121,7 @@ const BlogPage = () => {
 			</button>
 			<p>Added by: {blog.user.name}</p>
 			{deleteBlogButton()}
+			<Comments comments={commentContents} />
 		</div>
 	);
 };

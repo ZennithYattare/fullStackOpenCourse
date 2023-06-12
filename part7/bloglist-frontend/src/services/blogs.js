@@ -21,7 +21,17 @@ export const getBlog = async (id) => {
 
 export const create = async (newObject) => {
 	const config = { headers: { Authorization: token } };
-	const response = await axios.post(baseUrl, newObject, config);
+	const response = await axios.post(`${baseUrl}/`, newObject, config);
+	return response.data;
+};
+
+export const addComment = async (id, comment) => {
+	const config = { headers: { Authorization: token } };
+	const response = await axios.post(
+		`${baseUrl}/${id}/comments`,
+		comment,
+		config
+	);
 	return response.data;
 };
 
