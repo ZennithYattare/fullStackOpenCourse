@@ -7,16 +7,16 @@ const User = require("../models/user");
 const middleware = require("../utils/middleware");
 
 blogsRouter.get("/", async (request, response) => {
-	const blogs = await Blog.find({})
-		.populate("user", { blogs: 0 })
-		.populate("comments", { content: 1 });
+	const blogs = await Blog.find({}).populate("user", { blogs: 0 });
 	response.json(blogs);
 });
 
 blogsRouter.get("/:id", async (request, response) => {
-	const blog = await Blog.findById(request.params.id).populate("user", {
-		blogs: 0,
-	});
+	const blog = await Blog.findById(request.params.id)
+		.populate("user", {
+			blogs: 0,
+		})
+		.populate("comments", { content: 1 });
 	response.json(blog);
 });
 
