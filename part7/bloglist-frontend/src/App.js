@@ -54,7 +54,6 @@ const App = () => {
 			<Notification />
 			{user === null ? (
 				<>
-					<h2>Login to application</h2>
 					<LoginForm />
 				</>
 			) : (
