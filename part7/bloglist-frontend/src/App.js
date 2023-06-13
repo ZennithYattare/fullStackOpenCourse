@@ -16,7 +16,7 @@ import Users from "./components/Users";
 import UserBlogs from "./components/UserBlogs";
 
 const App = () => {
-	const [state, setState] = useState(false);
+	const [navBarState, setNavBarState] = useState(false);
 	const dispatchNotification = useDispatchNotification();
 	const dispatchUser = useDispatchUser();
 	const { user } = useUser();
@@ -38,7 +38,7 @@ const App = () => {
 			message: "Logged out successfully!",
 			alert: "success",
 		});
-		setState(false);
+		setNavBarState(false);
 	};
 
 	const navigation = [
@@ -61,9 +61,11 @@ const App = () => {
 								<div className="ml-auto mr-0 md:hidden">
 									<button
 										className="rounded-md p-2 text-gray-700 outline-none focus:border focus:border-gray-400"
-										onClick={() => setState(!state)}
+										onClick={() =>
+											setNavBarState(!navBarState)
+										}
 									>
-										{state ? (
+										{navBarState ? (
 											<svg
 												xmlns="http://www.w3.org/2000/svg"
 												className="h-6 w-6"
@@ -97,7 +99,7 @@ const App = () => {
 							</div>
 							<div
 								className={`mt-8 flex-1 justify-self-center pb-3 md:mt-0 md:block md:pb-0 ${
-									state ? "block" : "hidden"
+									navBarState ? "block" : "hidden"
 								}`}
 							>
 								<ul className="mb-2 mt-2 items-center justify-end space-y-8 md:flex md:space-x-6 md:space-y-0">
@@ -113,7 +115,7 @@ const App = () => {
 												>
 													{item.title}
 												</Link>
-												{state && (
+												{navBarState && (
 													<div className="hidden md:inline-block">
 														<a
 															href="javascript:void(0)"
@@ -150,12 +152,19 @@ const App = () => {
 							</div>
 						</div>
 					</nav>
-					<h2>Blogs</h2>
-					{
-						<Togglable buttonLabel="Create new blog">
-							<BlogForm />
-						</Togglable>
-					}
+					<div className="mx-auto max-w-screen-xl px-4 md:px-8">
+						<div className="max-w-lg">
+							<h3 className="text-xl font-bold text-gray-800 sm:text-2xl">
+								Blogs
+							</h3>
+							{
+								<Togglable buttonLabel="Create new blog">
+									<BlogForm />
+								</Togglable>
+							}
+						</div>
+					</div>
+
 					<Routes>
 						<Route path="/" element={<BlogsList />} />
 						<Route path="/blogs/:id" element={<BlogPage />} />

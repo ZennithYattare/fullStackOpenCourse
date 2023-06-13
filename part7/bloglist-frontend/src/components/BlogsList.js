@@ -36,12 +36,6 @@ function BlogsList() {
 
 	return (
 		<div className="mx-auto max-w-screen-xl px-4 md:px-8">
-			<div className="max-w-lg">
-				<h3 className="text-xl font-bold text-gray-800 sm:text-2xl">
-					Blogs
-				</h3>
-				<p className="mt-2 text-gray-600">Create new blog</p>
-			</div>
 			<div
 				data-testid="blogsList"
 				className="blog mt-12 overflow-x-auto rounded-lg border shadow-sm"

@@ -59,37 +59,44 @@ const BlogForm = () => {
 
 	return (
 		<form id="blogForm" onSubmit={addBlog}>
-			<div>
-				<label htmlFor="title">Title:</label>
+			<div className="relative mt-2 max-w-xs">
 				<input
 					type="text"
 					name="title"
+					placeholder="Title"
+					className="w-full rounded-lg border bg-transparent py-2 pl-3 pr-3 text-gray-500 shadow-sm outline-none focus:border-indigo-600"
 					value={title}
 					onChange={handleTitleChange}
 					id="blogFormTitle"
 				/>
 			</div>
-			<div>
-				<label htmlFor="author">Author:</label>
+			<div className="relative mt-2 max-w-xs">
 				<input
 					type="text"
 					name="author"
+					placeholder="Author"
+					className="w-full rounded-lg border bg-transparent py-2 pl-3 pr-3 text-gray-500 shadow-sm outline-none focus:border-indigo-600"
 					value={author}
 					onChange={handleAuthorChange}
 					id="blogFormAuthor"
 				/>
 			</div>
-			<div>
-				<label htmlFor="url">URL:</label>
+			<div className="relative mt-2 max-w-xs">
 				<input
 					type="text"
 					name="url"
+					placeholder="URL"
+					className="w-full rounded-lg border bg-transparent py-2 pl-3 pr-3 text-gray-500 shadow-sm outline-none focus:border-indigo-600"
 					value={url}
 					onChange={handleUrlChange}
 					id="blogFormUrl"
 				/>
 			</div>
-			<button id="blogFormSubmitButton" type="submit">
+			<button
+				id="blogFormSubmitButton"
+				type="submit"
+				className="mt-4 rounded-lg border bg-indigo-200 px-4 py-2 text-gray-700 duration-100 hover:border-indigo-600 active:shadow-lg"
+			>
 				Create
 			</button>
 		</form>
