@@ -35,11 +35,32 @@ function BlogsList() {
 	}
 
 	return (
-		<>
-			{blogs.map((blog) => (
-				<Blog key={blog.id} blog={blog} user={user} />
-			))}
-		</>
+		<div className="mx-auto max-w-screen-xl px-4 md:px-8">
+			<div className="max-w-lg">
+				<h3 className="text-xl font-bold text-gray-800 sm:text-2xl">
+					Blogs
+				</h3>
+				<p className="mt-2 text-gray-600">Create new blog</p>
+			</div>
+			<div
+				data-testid="blogsList"
+				className="blog mt-12 overflow-x-auto rounded-lg border shadow-sm"
+			>
+				<table className="w-full table-auto text-left text-sm">
+					<thead className="border-b bg-gray-50 font-medium text-gray-600">
+						<tr>
+							<th className="px-6 py-3">Title</th>
+							<th className="px-6 py-3">Author</th>
+						</tr>
+					</thead>
+					<tbody className="divide-y text-gray-600">
+						{blogs.map((blog) => (
+							<Blog key={blog.id} blog={blog} user={user} />
+						))}
+					</tbody>
+				</table>
+			</div>
+		</div>
 	);
 }
 

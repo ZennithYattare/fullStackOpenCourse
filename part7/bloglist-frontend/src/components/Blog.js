@@ -1,24 +1,21 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Blog = ({ blog }) => {
-	const blogStyle = {
-		paddingTop: 10,
-		paddingLeft: 2,
-		border: "solid",
-		borderWidth: 1,
-		marginBottom: 5,
+	const navigate = useNavigate();
+	const goRouteId = (id) => {
+		navigate(`/blogs/${id}`);
 	};
 
 	return (
-		<div data-testid="blogsList" className="blog" style={blogStyle}>
-			<div>
-				<p>
-					<Link to={`/blogs/${blog.id}`}>
-						{blog.title} - {blog.author}
-					</Link>
-				</p>
-			</div>
-		</div>
+		<>
+			<tr
+				onClick={() => goRouteId(blog.id)}
+				className="hover:cursor-pointer"
+			>
+				<td className="whitespace-nowrap px-6 py-4">{blog.title}</td>
+				<td className="whitespace-nowrap px-6 py-4">{blog.author}</td>
+			</tr>
+		</>
 	);
 };
 
