@@ -16,11 +16,21 @@ const Togglable = (props) => {
 	return (
 		<div>
 			<div style={hideWhenVisible}>
-				<button onClick={toggleVisibility}>{props.buttonLabel}</button>
+				<button
+					onClick={toggleVisibility}
+					className="rounded-lg border px-4 py-2 text-gray-700 duration-100 hover:border-indigo-600 active:shadow-lg"
+				>
+					{props.buttonLabel}
+				</button>
 			</div>
 			<div style={showWhenVisible}>
 				{props.children}
-				<button onClick={toggleVisibility}>Cancel</button>
+				<button
+					onClick={toggleVisibility}
+					className="mt-2 rounded-lg border bg-red-200 px-4 py-2 text-gray-700 duration-100 hover:border-indigo-600 active:shadow-lg"
+				>
+					Cancel
+				</button>
 			</div>
 		</div>
 	);
