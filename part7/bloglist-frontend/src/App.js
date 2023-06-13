@@ -38,6 +38,7 @@ const App = () => {
 			message: "Logged out successfully!",
 			alert: "success",
 		});
+		setState(false);
 	};
 
 	const navigation = [
