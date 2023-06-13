@@ -1,4 +1,6 @@
-/** @format */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 .note {
 	color: grey;
