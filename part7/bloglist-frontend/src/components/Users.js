@@ -5,7 +5,6 @@ import { getAllUsers } from "../services/users";
 import { Link } from "react-router-dom";
 
 const Users = () => {
-
 	const {
 		data: users,
 		isLoading,
@@ -32,28 +31,37 @@ const Users = () => {
 	}
 
 	return (
-		<div>
-			<h2>Users</h2>
-			<table>
-				<thead>
-					<tr>
-						<th></th>
-						<th>blogs created</th>
-					</tr>
-				</thead>
-				<tbody>
-					{users.map((user) => (
-						<tr key={user.id}>
-							<td>
-								<Link to={`/users/${user.id}`}>
-									{user.name}
-								</Link>
-							</td>
-							<td>{user.blogs.length}</td>
+		<div className="mx-auto max-w-screen-xl px-4 md:px-8">
+			<div className="max-w-lg">
+				<h3 className="text-xl font-bold text-gray-800 sm:text-2xl">
+					Users
+				</h3>
+			</div>
+			<div
+				data-testid="blogsList"
+				className="blog mt-12 overflow-x-auto rounded-lg border shadow-sm"
+			>
+				<table className="w-full table-auto text-left text-sm">
+					<thead className="border-b bg-gray-50 font-medium text-gray-600">
+						<tr>
+							<th className="px-6 py-3">Author</th>
+							<th className="px-6 py-3">Blogs Created</th>
 						</tr>
-					))}
-				</tbody>
-			</table>
+					</thead>
+					<tbody className="divide-y text-gray-600">
+						{users.map((user) => (
+							<tr key={user.id}>
+								<td className="whitespace-nowrap px-6 py-4">
+									<Link to={`/users/${user.id}`}>
+										{user.name}
+									</Link>
+								</td>
+								<td>{user.blogs.length}</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</div>
 		</div>
 	);
 };

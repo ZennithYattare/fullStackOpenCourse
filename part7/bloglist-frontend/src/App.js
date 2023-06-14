@@ -7,10 +7,10 @@ import { setToken } from "./services/blogs";
 import { Routes, Route, Link } from "react-router-dom";
 
 import LoginForm from "./components/Login";
-import Togglable from "./components/Togglable";
+// import Togglable from "./components/Togglable";
 import Notification from "./components/Notification";
 import BlogsList from "./components/BlogsList";
-import BlogForm from "./components/BlogForm";
+// import BlogForm from "./components/BlogForm";
 import BlogPage from "./components/BlogPage";
 import Users from "./components/Users";
 import UserBlogs from "./components/UserBlogs";
@@ -152,7 +152,7 @@ const App = () => {
 							</div>
 						</div>
 					</nav>
-					<div className="mx-auto max-w-screen-xl px-4 md:px-8">
+					{/* <div className="mx-auto max-w-screen-xl px-4 md:px-8">
 						<div className="max-w-lg">
 							<h3 className="text-xl font-bold text-gray-800 sm:text-2xl">
 								Blogs
@@ -163,7 +163,7 @@ const App = () => {
 								</Togglable>
 							}
 						</div>
-					</div>
+					</div> */}
 
 					<Routes>
 						<Route path="/" element={<BlogsList />} />
