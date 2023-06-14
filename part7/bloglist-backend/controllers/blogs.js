@@ -5,6 +5,7 @@ const blogsRouter = require("express").Router();
 const Blog = require("../models/blog");
 const User = require("../models/user");
 const middleware = require("../utils/middleware");
+const Comment = require("../models/comment");
 
 blogsRouter.get("/", async (request, response) => {
 	const blogs = await Blog.find({}).populate("user", { blogs: 0 });
@@ -101,6 +102,9 @@ blogsRouter.delete(
 			(b) => b.toString() !== blog._id.toString()
 		);
 		await user.save();
+
+		// Delete comments associated with the blog
+		await Comment.deleteMany({ blog: blog._id });
 
 		await Blog.findByIdAndRemove(request.params.id);
 
