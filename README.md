@@ -11,7 +11,7 @@ This repository contains the projects completed as part of the Full Stack Open c
 - **Project:** Diagrams
 - **Description:** Introduction to the basics of web applications, including HTTP, HTML, and CSS.
 - **Screenshot(s):**
-  ![Part 0](part0\part0_1.png)
+  ![Part 0](part0/part0_1.png)
 
 ### Part 1: Introduction to React
 
@@ -21,7 +21,7 @@ This repository contains the projects completed as part of the Full Stack Open c
   - Anecdotes
 - **Description:** Introduction to React, components, props, and state management.
 - **Screenshot(s):**
-  ![Part 1](part1\part1_1.png)
+  ![Part 1](part1/part1_1.png)
 
 ### Part 2: Communicating with Server
 
@@ -31,30 +31,30 @@ This repository contains the projects completed as part of the Full Stack Open c
   - Phonebook
 - **Description:** Fetching data from a server, rendering collections, forms, and handling side effects.
 - **Screenshot(s):**
-  ![Part 2](part2\part2_1.png)
+  ![Part 2](part2/part2_1.png)
 
 ### Part 3: Programming a Server with NodeJS and Express
 
 - **Project:** Phonebook Backend
 - **Description:** Building a backend with Node.js and Express, connecting to a MongoDB database, and deploying the application.
 - **Screenshot(s):**
-  ![Part 3](part3\part3_1.png)
+  ![Part 3](part3/part3_1.png)
 
 ### Part 4: Structure of Backend Application, Introduction to Testing
 
 - **Project:** Blog List
 - **Description:** Structuring a backend application, user authentication, and testing with Jest.
 - **Screenshot(s):**
-  ![Part 4-1](part4\part4_1.png)
-  ![Part 4-2](part4\part4_2.png)
+  ![Part 4-1](part4/part4_1.png)
+  ![Part 4-2](part4/part4_2.png)
 
 ### Part 5: Testing React Apps
 
 - **Project:** Blog List Frontend
 - **Description:** Testing React applications using React Testing Library and Jest.
 - **Screenshot(s):**
-  ![Part 5-1](part5\part5_1.png)
-  ![Part 5-2](part5\part5_2.png)
+  ![Part 5-1](part5/part5_1.png)
+  ![Part 5-2](part5/part5_2.png)
 
 ### Part 6: Advanced State Management
 
@@ -63,7 +63,7 @@ This repository contains the projects completed as part of the Full Stack Open c
   - Redux Anecdotes
 - **Description:** State management with Redux, actions, reducers, and connecting React components to Redux.
 - **Screenshot(s):**
-  ![Part 6-1](part6\part6_1.png)
+  ![Part 6-1](part6/part6_1.png)
 
 ### Part 7: React Router, Custom Hooks, Styling App with CSS and Webpack
 
@@ -74,9 +74,9 @@ This repository contains the projects completed as part of the Full Stack Open c
   - Routed Anecdotes
 - **Description:** Routing with React Router, creating custom hooks, and styling applications with CSS and Webpack.
 - **Screenshot(s):**
-  ![Part 7-1](part7\part7_1.png)
-  ![Part 7-2](part7\part7_2.png)
-  ![Part 7-3](part7\part7_3.png)
+  ![Part 7-1](part7/part7_1.png)
+  ![Part 7-2](part7/part7_2.png)
+  ![Part 7-3](part7/part7_3.png)
 
 ## Getting Started
 
